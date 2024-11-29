@@ -1,5 +1,11 @@
-const TestPage = () => {
-  return <div>TestPage</div>;
-};
+import React from 'react'
 
-export default TestPage;
+const Testpage = () => {
+  return (
+    <div>
+      
+    </div>
+  )
+}
+
+export default Testpage
