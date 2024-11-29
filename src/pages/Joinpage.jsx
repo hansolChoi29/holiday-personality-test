@@ -3,3 +3,4 @@ const Joinpage = () => {
 };
 
 export default Joinpage;
+
