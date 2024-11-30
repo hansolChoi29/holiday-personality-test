@@ -1,4 +1,5 @@
-import { supabase } from "../supabase/supabase";
+import { supabase } '../supabase/supabase.js';
+
 // supabase import
 
 //결과저장
