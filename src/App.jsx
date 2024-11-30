@@ -16,9 +16,9 @@ const App = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/joinpage" element={<Joinpage />} />
         <Route path="/loginpage" element={<Loginpage />} />
-        <Route path="/results" element={<Results />} />
         <Route path="/testpage" element={<TestPage />} />
         <Route element={<PrivateRoute />}></Route>
+        <Route path="/results" element={<Results />} />
         <Route path="/mypage" element={<Mypage />} />
       </Routes>
     </BrowserRouter>
