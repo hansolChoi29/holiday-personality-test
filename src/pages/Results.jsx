@@ -12,7 +12,7 @@ const Results = () => {
       try {
         const userId = localStorage.getItem("userId");
         if (!userId) {
-          throw new Error("User ID not found. Please log in.");
+          throw new Error("User ID not found. ");
         }
 
         const { data, error } = await supabase
