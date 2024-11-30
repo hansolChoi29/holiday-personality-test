@@ -1,10 +1,26 @@
 import { supabase } from "../supabase/supabase";
-// 로컬스토리지에 사용자 데이터와 id저장
+// supabase import
 
-// 회원가입
+//결과저장
+export const saveUserResult = async ({ mbti, description, userId }) => {
+  const { data, error } = await supabase
+    .from("results")
+    .insert([{ mbti, description, user_id: userId }]);
+  if (error) throw new Error(error.message);
+  return data;
+};
 
-// 로그인
+// src/services/api/users.js
 
-// 사용자 프로필 가져오기
+// 사용자 정보 가져오기
+export const fetchUserInfo = async () => {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) throw new Error(error.message);
 
-//프로필 업데이트
+  const userId = data?.user?.id;
+  if (userId) {
+    localStorage.setItem("userId", userId); // userId를 localStorage에 저장
+  }
+
+  return data;
+};
