@@ -1,4 +1,4 @@
-import { supabase } '../supabase/supabase.js';
+import { supabase } from "../supabase/supabase";
 
 // supabase import
 
