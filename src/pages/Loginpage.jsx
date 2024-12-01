@@ -14,8 +14,7 @@ const Container = styled.div`
   transform: translateY(-70%);
   margin-left: 180px;
 `;
-// 사랑해 릠졍 ⭐
-//  아아아ㅏ
+
 const Gifimg = styled.img`
   position: absolute;
   transform: translate(-80px, 170px);
@@ -38,10 +37,6 @@ const Box = styled.div`
   background-color: #e3e3e3;
   transform: translateY(-30%);
   right: 150px;
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: center; */
-  /* justify-content: center; */
   padding: 15px;
   position: absolute;
 `;
@@ -78,7 +73,6 @@ const Input = styled.input`
     background-color: #fff;
   }
 `;
-// 림졍 사랑행 헷! 파이팅! 림졍! !!!!⭐
 
 const Btn = styled.button`
   width: 250px;
@@ -185,10 +179,10 @@ const Login = () => {
             />
             <Btn type="submit">로그인</Btn>
           </Form>
-          {/* 림졍사랑해 ⭐ */}
+
           <SignUpGroup>
             <p>계정이 없으신가요?</p>
-            <SignUpBtn>회원가입</SignUpBtn>
+            <SignUpBtn onClick={handleSingup}>회원가입</SignUpBtn>
           </SignUpGroup>
         </Box>
       </Containerwithcard>
