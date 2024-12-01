@@ -31,6 +31,7 @@ const Login = () => {
   };
   return (
     <div>
+      <h1>크리스마스에 나는 뭐할까?</h1>
       <h1>Login</h1>
       <form onSubmit={handleLogin}>
         <label htmlFor="email">Email:</label>
