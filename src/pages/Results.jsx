@@ -41,12 +41,8 @@ const Results = () => {
 
   return (
     <div>
-      <h1>Your Test Results</h1>
       {userResult ? (
         <div>
-          <p>
-            <strong>MBTI:</strong> {userResult.mbti}
-          </p>
           <p>
             <strong>Description:</strong> {userResult.description}
           </p>
