@@ -6,6 +6,7 @@ import Joinpage from '../pages/Joinpage';
 import TestPage from '../pages/TestPage';
 import Results from '../pages/Results';
 import Mypage from '../pages/Mypage';
+import PrivateRoute from '../components/PrivateRoute';
 
 const Router = () => {
   return (
