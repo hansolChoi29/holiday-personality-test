@@ -130,18 +130,20 @@ const Login = () => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
-
         password
       });
+
       if (error) throw error;
 
       console.log('Login successful:', data);
-      alert('Login successful!');
 
+      // 로그인 성공 시 세션 정보를 로컬스토리지에 저장
+      localStorage.setItem('supabase.auth.token', JSON.stringify(data.session));
+
+      alert('Login successful!');
       navigate('/testpage'); // 페이지 이동
     } catch (error) {
       console.error('Login failed:', error.message);
-
       alert(`Login failed: ${error.message}`);
     }
   };
