@@ -143,7 +143,7 @@ const Login = () => {
       alert('Login successful!');
       navigate('/testpage'); // 페이지 이동
     } catch (error) {
-      console.error('Login failed:', error.message);
+      console.error('로그인실패!', error.message);
       alert(`Login failed: ${error.message}`);
     }
   };
