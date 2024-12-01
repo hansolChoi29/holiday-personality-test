@@ -74,7 +74,7 @@ const Replay = styled(Link)`
   font-weight: bold;
   text-align: center; /* 텍스트 중앙 정렬 */
   display: block; /* 블록처럼 보이는 인라인 요소 */
-  margin: 20px auto; /* 수평 중앙 정렬 */
+  margin: 10px auto; /* 수평 중앙 정렬 */
   &:hover {
     background-color: white;
     color: #d84137;
