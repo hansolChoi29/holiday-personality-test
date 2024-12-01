@@ -15,7 +15,7 @@ const Container = styled.div`
   margin-left: 180px;
 `;
 // 사랑해 릠졍 ⭐
-
+//  아아아ㅏ
 const Gifimg = styled.img`
   position: absolute;
   transform: translate(-80px, 170px);
