@@ -128,6 +128,7 @@ const SignUpBtn = styled.button`
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const navigate = useNavigate();
   // 로그인 처리 함수
   const handleLogin = async (e) => {
@@ -135,6 +136,7 @@ const Login = () => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
+
         password
       });
       if (error) throw error;
@@ -145,6 +147,7 @@ const Login = () => {
       navigate('/testpage'); // 페이지 이동
     } catch (error) {
       console.error('Login failed:', error.message);
+
       alert(`Login failed: ${error.message}`);
     }
   };
