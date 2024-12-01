@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../supabase/supabase";
+import { useEffect, useState } from 'react';
+import { supabase } from '../supabase/supabase';
 
 const Results = () => {
   const [userResult, setUserResult] = useState(null); // 사용자 결과 저장
@@ -10,15 +10,15 @@ const Results = () => {
     const fetchResults = async () => {
       setLoading(true);
       try {
-        const users = localStorage.getItem("users");
+        const users = localStorage.getItem('users');
         if (!users) {
-          throw new Error("User ID not found. ");
+          throw new Error('User ID not found. ');
         }
 
         const { data: data, error: error } = await supabase
-          .from("results")
-          .select("mbti, description")
-          .eq("id", users)
+          .from('results')
+          .select('mbti, description')
+          .eq('id', users)
           .single(); // 사용자별 단일 결과 가져오기
 
         if (error) throw new Error(error.message);

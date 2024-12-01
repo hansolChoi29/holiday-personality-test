@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Joinpage from "./pages/Joinpage";
@@ -23,6 +24,12 @@ const App = () => {
       </Routes>
     </BrowserRouter>
   );
+=======
+import Router from './router/Router';
+
+const App = () => {
+  return <Router />;
+>>>>>>> 3a6f09dd4c32ae004467634559a2894b76b5f78f
 };
 
 export default App;
