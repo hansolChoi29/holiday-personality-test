@@ -10,15 +10,15 @@ const Results = () => {
     const fetchResults = async () => {
       setLoading(true);
       try {
-        const userId = localStorage.getItem("userId");
-        if (!userId) {
+        const users = localStorage.getItem("users");
+        if (!users) {
           throw new Error("User ID not found. ");
         }
 
         const { data: data, error: error } = await supabase
           .from("results")
           .select("mbti, description")
-          .eq("id", userId)
+          .eq("id", users)
           .single(); // 사용자별 단일 결과 가져오기
 
         if (error) throw new Error(error.message);
