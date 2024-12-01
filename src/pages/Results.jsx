@@ -15,10 +15,10 @@ const Results = () => {
           throw new Error("User ID not found. ");
         }
 
-        const { data, error } = await supabase
+        const { data: data, error: error } = await supabase
           .from("results")
           .select("mbti, description")
-          .eq("user_id", userId)
+          .eq("id", userId)
           .single(); // 사용자별 단일 결과 가져오기
 
         if (error) throw new Error(error.message);
