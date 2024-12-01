@@ -1,5 +1,4 @@
-import { supabase } '../supabase/supabase.js';
-
+import { supabase } from "../supabase/supabase";
 
 export const saveTestResult = async ({ mbti, description }) => {
   const userId = localStorage.getItem("userId");
