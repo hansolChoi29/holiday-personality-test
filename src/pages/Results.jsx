@@ -5,31 +5,37 @@ import socks from '/socks.png';
 import star from '/star.png';
 import tree2 from '/tree2.png';
 import ball from '/ball.png';
-import gjh from '/gjh.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import background1 from '/background1.png';
 // Styled Components
 const PageWrapper = styled.div`
+  background-image: url(${background1}); /* 배경 이미지 설정 */
+  background-size: cover; /* 배경 이미지를 전체 화면에 맞춤 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  background-position: center; /* 배경 이미지 중앙 정렬 */
   display: flex;
-  justify-content: center; /* 수평 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
+  justify-content: center;
+  align-items: center;
   height: 100vh; /* 화면 전체 높이 */
   width: 100%; /* 전체 화면 너비 */
   margin: 0;
   padding: 0;
   box-sizing: border-box; /* 레이아웃 충돌 방지 */
-  background-color: #f5f5f5; 원하는 배경색
 `;
 
 const ResultContainer = styled.div`
-  width: 700px;
-  height: 350px;
+  width: 400px;
+  height: 550px;
   padding: 20px;
   background-color: #67a53b;
   border-radius: 20px;
   border: 15px solid #d84137;
   font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 `;
 
 const Title = styled.p`
@@ -39,26 +45,81 @@ const Title = styled.p`
   font-weight: bold;
   color: black;
   text-align: center;
-  margin-bottom: 20px;
-  width: 150px;
-  position: absolute;
-  left: 45%;
-  top: 30%;
+  padding: 5px;
+  width: 50%;
+  margin: 10px 0;
 `;
 
 const Description = styled.p`
-  width: 600px;
-  height: 100px;
-  border-radius: 20px;
-  text-align: justify;
-  align-items: center;
+  width: 90%;
   padding: 15px;
-
+  border-radius: 15px;
+  text-align: justify;
   color: #333;
-  font-size: 18px;
+  font-weight: bold;
+  font-size: 15px;
   background-color: white;
+  margin-bottom: 20px;
 `;
 
+const TagContainer = styled.div`
+  display: flex; /* Flexbox로 가로 배치 */
+  gap: 20px; /* 태그 간 간격 */
+  justify-content: center; /* 중앙 정렬 */
+  margin-bottom: 20px; /* 아래 요소와 간격 */
+`;
+const Besttag = styled.p`
+  background-color: white;
+  border-radius: 10px;
+  font-size: 15px;
+  width: 150px; /* 고정된 너비 */
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 10%;
+  top: 64%;
+  color: #b82218;
+  font-weight: bold;
+`;
+const Badtag = styled.p`
+  background-color: white;
+  border-radius: 10px;
+  font-size: 15px;
+  width: 150px; /* 고정된 너비 */
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 55%;
+  top: 64%;
+  color: #67a53b;
+  font-weight: bold;
+`;
+
+const TagLabelbad = styled.p`
+  font-size: 14px;
+  color: #f9f468;
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+  right: 15%;
+  top: 63%;
+  margin: 0; /* 태그와의 간격 제거 */
+`;
+
+const TagLabelbest = styled.p`
+  font-size: 14px;
+  color: #f9f468;
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+  right: 58%;
+  top: 63%;
+  margin: 0;
+`;
 const ImageRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -70,34 +131,24 @@ const StyledImage = styled.img`
   width: 70px;
   height: 70px;
   border-radius: 10px;
-  justify-content: space-around;
+  margin: 10px;
 `;
 const Replay = styled(Link)`
-  width: 100px; /* 버튼 너비 제한 */
-  background-color: white;
-  color: black;
-  padding: 10px 0; /* 상하 여백 */
-  text-decoration: none; /* 기본 밑줄 제거 */
-  border: 1px solid black;
+  width: 150px;
+  background-color: #f9f468;
+  color: #08323f;
+  padding: 15px;
+  text-decoration: none;
   border-radius: 5px;
-  font-size: 14px; /* 폰트 크기 */
+  font-size: 14px;
   font-weight: bold;
-  text-align: center; /* 텍스트 중앙 정렬 */
-  display: block; /* 블록처럼 보이는 인라인 요소 */
-  margin: 10px auto; /* 수평 중앙 정렬 */
+  text-align: center;
   &:hover {
-    background-color: white;
-    color: #d84137;
+    background-color: #f9f468;
+    color: red;
   }
 `;
-const Gjhimg = styled.img`
-  width: 400px;
-  height: 300px;
-  margin: 20px;
-  position: absolute; /* 절대 위치 지정 */
-  bottom: 0; /* 화면 맨 아래 */
-  left: 0; /* 화면 왼쪽 */
-`;
+
 const Results = () => {
   const [userResult, setUserResult] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -107,23 +158,25 @@ const Results = () => {
     const fetchResults = async () => {
       setLoading(true);
       try {
-        // 로컬스토리지에서 세션 데이터 가져오기
-        const sessionData = localStorage.getItem('supabase.auth.token');
-        if (!sessionData) {
-          throw new Error('사용자가 로그인되지 않았습니다. 다시 로그인해주세요.');
+        // Supabase 세션 확인
+        const {
+          data: { session },
+          error
+        } = await supabase.auth.getSession();
+        if (error || !session) {
+          throw new Error('로그인 세션이 없습니다. 다시 로그인해주세요.');
         }
 
-        const session = JSON.parse(sessionData);
-        const userId = session.user.id; // 로그인된 사용자 ID 가져오기
+        const userId = session.user.id;
 
         // Supabase에서 사용자 결과 가져오기
-        const { data, error } = await supabase
+        const { data, error: fetchError } = await supabase
           .from('results')
-          .select('mbtititle, description')
+          .select('mbtititle, description, besttag, badtag')
           .eq('id', userId)
           .single();
 
-        if (error) throw new Error(error.message);
+        if (fetchError) throw new Error(fetchError.message);
 
         setUserResult(data); // 결과 저장
       } catch (err) {
@@ -154,6 +207,14 @@ const Results = () => {
             <Title>{userResult.mbtititle}</Title> {/* 타이틀 */}
             {/* 결과 설명 */}
             <Description>{userResult.description}</Description> {/* 설명 */}
+            <TagContainer>
+              <div>
+                <TagLabelbest>연락 안 될 친구</TagLabelbest>
+                <Besttag>{userResult.besttag}</Besttag> {/* 설명 */}
+              </div>
+              <TagLabelbad>같이 눈사람 만들 친구</TagLabelbad>
+              <Badtag>{userResult.badtag}</Badtag> {/* 설명 */}
+            </TagContainer>
             {/* 하단 이미지 */}
             <ImageRow position="bottom">
               <StyledImage src={snowman} alt="Snowman" />
@@ -166,7 +227,6 @@ const Results = () => {
         )}
         <Replay to="./testpate">다시해보기</Replay>
       </ResultContainer>
-      <Gjhimg src={gjh} alt="gjh" />
     </PageWrapper>
   );
 };
