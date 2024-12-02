@@ -13,14 +13,15 @@ const Router = () => {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/layout" element={<Layout />} />
-          <Route path="/" element={<Loginpage />} />
-          <Route path="/joinpage" element={<Joinpage />} />
-          <Route path="/testpage" element={<TestPage />} />
-          {/* <Route element={<PrivateRoute />}> */}
-          <Route path="/results" element={<Results />} />
-          <Route path="/mypage" element={<Mypage />} />
-          {/* </Route> */}
+          <Route element={<Layout />}>
+            <Route path="/" element={<Loginpage />} />
+            <Route path="/joinpage" element={<Joinpage />} />
+            <Route path="/testpage" element={<TestPage />} />
+            {/* <Route element={<PrivateRoute />}> */}
+            <Route path="/results" element={<Results />} />
+            <Route path="/mypage" element={<Mypage />} />
+            {/* </Route> */}
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>

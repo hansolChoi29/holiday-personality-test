@@ -1,8 +1,8 @@
 const Header = () => {
   return (
     <>
-      <span>홈</span>
-      <span>로그아웃</span>
+      <span>HOME</span>
+      <span>LOGOUT</span>
       <span>결과보기</span>
     </>
   );
