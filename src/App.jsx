@@ -4,8 +4,8 @@ import Loginpage from "./pages/Loginpage";
 import PrivateRoute from "./components/PrivateRoute";
 import Results from "./pages/Results";
 import Layout from "./components/Layout";
-import TestPage from "./pages/TestPage";
 import Mypage from "./pages/Mypage";
+import TestPage from "./pages/Testpage";
 
 const App = () => {
   return (
