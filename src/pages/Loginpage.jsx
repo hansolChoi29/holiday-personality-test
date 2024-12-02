@@ -120,6 +120,8 @@ const SingupBtn = styled.button`
   border: none;
   background-color: #fff;
   cursor: pointer;
+  font-weight: bold;
+  color: #08323f;
 `;
 
 const Login = () => {
@@ -129,7 +131,7 @@ const Login = () => {
   const navigate = useNavigate();
   // 로그인 처리 함수
   const handleLogin = async (e) => {
-    e.preventDefault(); // 폼 제출 기본 동작 방지
+    e.preventDefault();
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
