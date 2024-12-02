@@ -2,7 +2,7 @@ import { supabase } from "../supabase/supabase";
 
 export const saveTestResult = async ({ mbti, description }) => {
   const userId = localStorage.getItem("userId");
-  if (!userId) throw new Error("User is not logged in.");
+  if (!userId) throw new Error("사용자가 로그인되지 않았습니다.");
 
   const { data, error } = await supabase
     .from("results")
