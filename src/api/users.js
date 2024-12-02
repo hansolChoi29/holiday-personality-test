@@ -1,7 +1,5 @@
-
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { supabase } from "../supabase/supabase.js";
-
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { supabase } from '../supabase/supabase.js';
 
 // 사용자 정보 가져오기
 export const useFetchUserInfo = () => {
@@ -25,7 +23,9 @@ export const useSaveUserResult = () => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
 
+
       throw new Error("로컬스토리지에서 사용자 ID를 찾을 수 없습니다.");
+
 
     }
 
