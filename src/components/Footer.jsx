@@ -4,7 +4,7 @@ const LayoutContainer = styled.div`
   width: 100%;
   background-color: #b82218;
   text-align: center;
-  padding: 10px;
+  padding: 10px 0;
   color: #fff;
   font-size: 14px;
   font-weight: 100;
