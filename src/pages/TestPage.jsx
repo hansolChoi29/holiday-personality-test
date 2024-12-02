@@ -1,64 +1,108 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import TestForm from '../components/TestForm';
 import { useNavigate } from 'react-router-dom';
-import { useSaveUserResult } from '../api/users';
+import { calculateMBTI, christmass } from '../utils/chistmassCalculator';
 
+// 스타일드 컴포넌트 정의
+const PageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  min-height: 100vh;
+`;
+
+const ContentContainer = styled.div`
+  background-color: white;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const Title = styled.h1`
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 24px;
+`;
+
+const Description = styled.p`
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 24px;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  &:active {
+    background-color: #004085;
+  }
+`;
 
 const TestPage = ({ user }) => {
   const navigate = useNavigate();
   const [result, setResult] = useState(null);
 
-  // Supabase에 결과 저장 훅 사용
-  const { mutate, isLoading, isError, error } = useSaveUserResult();
+  const handleTestSubmit = async (answers) => {
+    const mbtiResult = calculateMBTI(answers);
 
-  const handleTestSubmit = (answers) => {
-    const mbtiResult = calculateMBTI(answers); // 사용자가 선택한 답변으로 MBTI 계산
+    try {
+      // API를 통해 결과 저장
+      await createTestResult({
+        userId: user.id,
+        mbti: mbtiResult,
+        description: mbtiDescriptions[mbtiResult] || '설명이 없습니다.'
+      });
 
-    setResult(mbtiResult); // 결과를 상태에 저장
-
-    // Supabase에 결과 저장
-    mutate(
-      {
-        userId: user.id, // 사용자의 ID
-        mbti: mbtiResult, // MBTI 결과
-        description: `당신의 MBTI는 ${mbtiResult}입니다.`, // 설명
-        mbtititle: `${mbtiResult}의 특징`, // 특징 제목
-        besttag: '긍정적인 태그', // 예: "이타적, 열정적"
-        badtag: '부정적인 태그' // 예: "충동적, 예민함"
-      },
-      {
-        onSuccess: () => {
-          alert('결과가 성공적으로 저장되었습니다!');
-        },
-        onError: (err) => {
-          console.error('결과 저장 실패:', err.message);
-          alert('결과 저장에 실패했습니다. 다시 시도해주세요.');
-        }
-      }
-    );
+      // 결과를 상태에 저장
+      setResult(mbtiResult);
+    } catch (error) {
+      console.error('결과 저장 실패:', error);
+      alert('결과 저장에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   const handleNavigateToResults = () => {
-    navigate('/results'); // 결과 목록 페이지로 이동
+    navigate('/results');
   };
 
   return (
-    <div>
-      {!result ? (
-        <>
-          <h1>MBTI 테스트</h1>
-          <TestForm onSubmit={handleTestSubmit} />
-        </>
-      ) : (
-        <>
-          <h1>테스트 결과: {result}</h1>
-          <p>당신의 MBTI 설명: {result}</p>
-          <button onClick={handleNavigateToResults}>결과 목록으로 이동</button>
-        </>
-      )}
-      {isLoading && <p>결과를 저장 중입니다...</p>}
-      {isError && <p>오류 발생: {error?.message}</p>}
-    </div>
+    <PageContainer>
+      <ContentContainer>
+        {!result ? (
+          <>
+            <Title>MBTI 테스트</Title>
+            <TestForm onSubmit={handleTestSubmit} />
+          </>
+        ) : (
+          <>
+            <Title>테스트 결과: {result}</Title>
+            <Description>{christmass[result] || '해당 성격 유형에 대한 설명이 없습니다.'}</Description>
+            <Button onClick={handleNavigateToResults}>결과 페이지로 이동하기</Button>
+          </>
+        )}
+      </ContentContainer>
+    </PageContainer>
   );
 };
 

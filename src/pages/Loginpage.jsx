@@ -5,6 +5,7 @@ import daeeun_kong from '/daeeun_kong.gif';
 import tree from '/tree.png';
 import title from '/title.png';
 import styled from 'styled-components';
+
 const Containerwithcard = styled.div`
   position: relative;
   margin-top: 350px;

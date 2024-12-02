@@ -1,7 +1,5 @@
-
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { supabase } from "../supabase/supabase";
-
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { supabase } from '../supabase/supabase.js';
 
 // 사용자 정보 가져오기
 export const useFetchUserInfo = () => {
@@ -27,7 +25,9 @@ export const useSaveUserResult = () => {
       throw new Error('로컬스토리지에서 사용자 ID를 찾을 수 없습니다.');
     }
 
-    const { data, error } = await supabase.from('results').insert([{ mbti, description, id: userId, mbtititle, besttag, badtag }]);
+    const { data, error } = await supabase
+      .from('results')
+      .insert([{ mbti, description, id: userId, mbtititle, besttag, badtag, created_at: new Date().toISOString() }]);
 
     if (error) throw new Error(error.message);
 

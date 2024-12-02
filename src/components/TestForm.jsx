@@ -2,37 +2,35 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { questions } from '../data/questions';
 
+// 스타일드 컴포넌트 정의
 const Form = styled.form`
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 0 auto;
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
 `;
 
-const QuestionContainer = styled.div`
-  margin-bottom: 1.5rem;
+const QuestionBlock = styled.div`
+  margin-bottom: 24px;
 `;
 
 const QuestionText = styled.p`
-  font-size: 1.2rem;
   font-weight: bold;
-  margin-bottom: 1rem;
-  color: #333333;
+  font-size: 18px;
+  margin-bottom: 12px;
+`;
+
+const OptionWrapper = styled.div`
+  margin-bottom: 8px;
 `;
 
 const OptionLabel = styled.label`
   display: block;
-  padding: 0.8rem;
-  border: 1px solid #dcdcdc;
+  padding: 12px;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  margin-bottom: 0.8rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-
-  background-color: ${(props) => (props.isSelected ? '#f5f5f5' : '#ffffff')};
-  border-color: ${(props) => (props.isSelected ? '#5d5dff' : '#dcdcdc')};
+  transition: background-color 0.3s;
+  background-color: ${(props) => (props.selected ? '#f5f5f5' : 'transparent')};
 
   &:hover {
     background-color: #f5f5f5;
@@ -40,28 +38,26 @@ const OptionLabel = styled.label`
 `;
 
 const OptionInput = styled.input`
-  margin-right: 1rem;
-  cursor: pointer;
+  margin-right: 8px;
 `;
 
 const SubmitButton = styled.button`
   width: 100%;
-  padding: 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #ffffff;
-  background-color: #5d5dff;
-  border: none;
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
   border-radius: 8px;
+  font-weight: bold;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s;
 
   &:hover {
-    background-color: #4a4aff;
+    background-color: #0056b3;
   }
 
   &:active {
-    background-color: #3a3abf;
+    background-color: #004085;
   }
 `;
 
@@ -83,21 +79,25 @@ const TestForm = ({ onSubmit }) => {
   return (
     <Form onSubmit={handleSubmit}>
       {questions.map((q, index) => (
-        <QuestionContainer key={q.id}>
+        <QuestionBlock key={q.id}>
           <QuestionText>{q.question}</QuestionText>
-          {q.options.map((option, i) => (
-            <OptionLabel key={i} isSelected={answers[index]?.answer === q.type.split('/')[i]}>
-              <OptionInput
-                type="radio"
-                name={`question-${index}`}
-                value={q.type.split('/')[i]}
-                checked={answers[index]?.answer === q.type.split('/')[i]}
-                onChange={() => handleChange(index, q.type.split('/')[i])}
-              />
-              {option}
-            </OptionLabel>
-          ))}
-        </QuestionContainer>
+          <div>
+            {q.options.map((option, i) => (
+              <OptionWrapper key={i}>
+                <OptionLabel selected={answers[index]?.answer === q.type.split('/')[i]}>
+                  <OptionInput
+                    type="radio"
+                    name={`question-${index}`}
+                    value={q.type.split('/')[i]}
+                    checked={answers[index]?.answer === q.type.split('/')[i]}
+                    onChange={() => handleChange(index, q.type.split('/')[i])}
+                  />
+                  {option}
+                </OptionLabel>
+              </OptionWrapper>
+            ))}
+          </div>
+        </QuestionBlock>
       ))}
       <SubmitButton type="submit">제출하기</SubmitButton>
     </Form>

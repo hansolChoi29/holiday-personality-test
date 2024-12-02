@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '../components/Layout';
 import Loginpage from '../pages/Loginpage';
 import Joinpage from '../pages/Joinpage';
-import TestPage from '../pages/TestPage';
 import Results from '../pages/Results';
 import Mypage from '../pages/Mypage';
 import PrivateRoute from '../components/PrivateRoute';
+import TestPage from '../pages/Testpage';
 
 const Router = () => {
   return (
