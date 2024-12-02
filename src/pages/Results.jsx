@@ -5,7 +5,7 @@ import socks from '/socks.png';
 import star from '/star.png';
 import tree2 from '/tree2.png';
 import ball from '/ball.png';
-
+import gjh from '/gjh.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ const PageWrapper = styled.div`
   margin: 0;
   padding: 0;
   box-sizing: border-box; /* 레이아웃 충돌 방지 */
-  background-color: #f5f5f5; /* 원하는 배경색 */
+  background-color: #f5f5f5; 원하는 배경색
 `;
 
 const ResultContainer = styled.div`
@@ -40,13 +40,23 @@ const Title = styled.p`
   color: black;
   text-align: center;
   margin-bottom: 20px;
+  width: 150px;
+  position: absolute;
+  left: 45%;
+  top: 30%;
 `;
 
 const Description = styled.p`
+  width: 600px;
+  height: 100px;
+  border-radius: 20px;
   text-align: justify;
-  line-height: 1.5;
-  margin: 20px;
+  align-items: center;
+  padding: 15px;
+
   color: #333;
+  font-size: 18px;
+  background-color: white;
 `;
 
 const ImageRow = styled.div`
@@ -80,6 +90,14 @@ const Replay = styled(Link)`
     color: #d84137;
   }
 `;
+const Gjhimg = styled.img`
+  width: 400px;
+  height: 300px;
+  margin: 20px;
+  position: absolute; /* 절대 위치 지정 */
+  bottom: 0; /* 화면 맨 아래 */
+  left: 0; /* 화면 왼쪽 */
+`;
 const Results = () => {
   const [userResult, setUserResult] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -99,7 +117,11 @@ const Results = () => {
         const userId = session.user.id; // 로그인된 사용자 ID 가져오기
 
         // Supabase에서 사용자 결과 가져오기
-        const { data, error } = await supabase.from('results').select('mbti, description').eq('id', userId).single();
+        const { data, error } = await supabase
+          .from('results')
+          .select('mbtititle, description')
+          .eq('id', userId)
+          .single();
 
         if (error) throw new Error(error.message);
 
@@ -129,9 +151,9 @@ const Results = () => {
               <StyledImage src={ball} alt="Ball" />
             </ImageRow>
             {/* 결과 타이틀 */}
-            <Title>{userResult.description.split(':')[0]}</Title> {/* 타이틀 */}
+            <Title>{userResult.mbtititle}</Title> {/* 타이틀 */}
             {/* 결과 설명 */}
-            <Description>{userResult.description.split(':')[1]}</Description> {/* 설명 */}
+            <Description>{userResult.description}</Description> {/* 설명 */}
             {/* 하단 이미지 */}
             <ImageRow position="bottom">
               <StyledImage src={snowman} alt="Snowman" />
@@ -144,6 +166,7 @@ const Results = () => {
         )}
         <Replay to="./testpate">다시해보기</Replay>
       </ResultContainer>
+      <Gjhimg src={gjh} alt="gjh" />
     </PageWrapper>
   );
 };
