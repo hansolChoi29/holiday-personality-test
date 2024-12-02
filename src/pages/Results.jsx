@@ -105,7 +105,7 @@ const TagLabelbad = styled.p`
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 15%;
+  right: 12%;
   top: 63%;
   margin: 0; /* 태그와의 간격 제거 */
 `;
@@ -116,7 +116,7 @@ const TagLabelbest = styled.p`
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 58%;
+  right: 62%;
   top: 63%;
   margin: 0;
 `;
