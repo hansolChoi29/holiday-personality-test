@@ -1,5 +1,5 @@
 import { Link, Navigate } from 'react-router-dom';
-import Logo from '../assets/logo2.svg';
+import Logo2 from '../assets/logo2.svg';
 import styled from 'styled-components';
 
 const LayoutContainer = styled.div`
@@ -37,7 +37,7 @@ const Header = () => {
 
   return (
     <LayoutContainer>
-      <LogoImg src={Logo} alt="Logo" />
+      <LogoImg src={Logo2} alt="Logo" />
       <NavContainer>
         <Text onClick={signOutUser}>LOGOUT</Text>
         <Text>

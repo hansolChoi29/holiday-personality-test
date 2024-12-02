@@ -13,7 +13,7 @@ const LayoutContainer = styled.div`
 const Footer = () => {
   return (
     <LayoutContainer>
-      MADE BY HanSol CHoi | HaEun Park | JeongEun Park | JiHyun Kwon | KyungPil Koo | Daeeun Kang
+      MADE BY HanSol Choi | HaEun Park | JeongEun Park | JiHyun Kwon | KyungPil Koo | Daeeun Kang
     </LayoutContainer>
   );
 };
