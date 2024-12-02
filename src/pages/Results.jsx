@@ -167,7 +167,7 @@ const Results = () => {
         if (error || !session) {
           throw new Error('로그인 세션이 없습니다. 다시 로그인해주세요.');
         }
-
+        console.log('Current Session:', session);
         const userId = session.user.id;
 
         // Supabase에서 사용자 결과 가져오기
