@@ -1,6 +1,71 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabase/supabase';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { Navigate } from 'react-router-dom';
+
+const SignUpBox = styled.div`
+  width: 400px;
+  height: auto;
+  border-radius: 20px;
+  background-color: #e3e3e3;
+  padding: 15px;
+  margin:auto;
+`;
+
+const SignUpTitle = styled.h1`
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 25px;
+  text-align: center;
+`;
+
+const InputForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const InputLabel = styled.label`
+  font-size: 16px;
+  color: #666;
+  text-align: left;
+  padding: 10px;
+`;
+
+const Input = styled.input`
+  width: 95%;
+  padding: 10px;
+  margin-top: 7px;
+  margin-bottom: 23px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: #f6f6f6;
+  outline: none;
+  &:focus {
+    border-color: #ffffff;
+    background-color: #fff;
+  }
+`;
+
+const SignUpBtn = styled.button`
+  width: 250px;
+  padding: 10px;
+  margin: 20px auto;
+  background-color: #d84137;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #ffffff;
+  &:hover {
+    background-color: #67a53b;
+    color: #000;
+  }
+`;
 
 const JoinPage = () => {
   const [email, setEmail] = useState('');
@@ -56,6 +121,17 @@ const JoinPage = () => {
         return;
       }
 
+      const { data: nicknameData, error: nicknameError } = await supabase
+        .from('user')
+        .select('*')
+        .eq('nickname', nickname)
+        .single();
+
+      if (nicknameData) {
+        alert('중복된 닉네임이 존재합니다.');
+        return;
+      }
+
       if (password.length < 8) {
         alert('비밀번호 8자 이상 입력해 주세요.');
         return;
@@ -96,20 +172,25 @@ const JoinPage = () => {
 
   if (!user) {
     return (
-      <div>
-        <form onSubmit={signUpNewUser}>
-          <input type="email" placeholder="Email" value={email} onChange={onChangeEmail} />
-          <input type="password" placeholder="Password" value={password} onChange={onChangePassword} />
-          <input
+      <SignUpBox>
+        <SignUpTitle>회원가입</SignUpTitle>
+        <InputForm onSubmit={signUpNewUser}>
+          <InputLabel htmlFor="email">Email:</InputLabel>
+          <Input type="email" placeholder="Email" value={email} onChange={onChangeEmail} />
+          <InputLabel htmlFor="password">password:</InputLabel>
+          <Input type="password" placeholder="Password" value={password} onChange={onChangePassword} />
+          <InputLabel htmlFor="PasswordConfirm">PasswordConfirm:</InputLabel>
+          <Input
             type="password"
             placeholder="PasswordConfirm"
             value={passwordConfirm}
             onChange={onChangePasswordConfirm}
           />
-          <input type="text" placeholder="Nickname" value={nickname} onChange={onChangeNickname} />
-          <button>회원가입</button>
-        </form>
-      </div>
+          <InputLabel htmlFor="Nickname">Nickname:</InputLabel>
+          <Input type="text" placeholder="Nickname" value={nickname} onChange={onChangeNickname} />
+          <SignUpBtn>회원가입</SignUpBtn>
+        </InputForm>
+      </SignUpBox>
     );
   } else {
     return <Navigate to="/" />;
