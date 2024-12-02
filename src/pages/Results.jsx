@@ -8,6 +8,7 @@ import ball from '/ball.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import background1 from '/background1.png';
+import daeeun_kong from '/daeeun_kong.gif';
 // Styled Components
 const PageWrapper = styled.div`
   background-image: url(${background1}); /* 배경 이미지 설정 */
@@ -148,7 +149,7 @@ const Replay = styled(Link)`
     color: red;
   }
 `;
-
+const Daeeun_kong = styled.img``;
 const Results = () => {
   const [userResult, setUserResult] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -195,6 +196,8 @@ const Results = () => {
 
   return (
     <PageWrapper>
+      <Daeeun_kong src={daeeun_kong}></Daeeun_kong>
+      <Daeeun_kong src={daeeun_kong}></Daeeun_kong>
       <ResultContainer>
         {userResult ? (
           <>
@@ -227,6 +230,8 @@ const Results = () => {
         )}
         <Replay to="./testpate">다시해보기</Replay>
       </ResultContainer>
+      <Daeeun_kong src={daeeun_kong}></Daeeun_kong>
+      <Daeeun_kong src={daeeun_kong}></Daeeun_kong>
     </PageWrapper>
   );
 };
