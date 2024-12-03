@@ -141,11 +141,7 @@ const Login = () => {
       if (error) throw error;
 
       console.log('Login successful:', data);
-
-      // 로그인 성공 시 세션 정보를 로컬스토리지에 저장
-      localStorage.setItem('supabase.auth.token', JSON.stringify(data.session));
-
-      alert('Login successful!');
+      alert('로그인 성공!');
       navigate('/testpage'); // 페이지 이동
     } catch (error) {
       console.error('로그인실패!', error.message);

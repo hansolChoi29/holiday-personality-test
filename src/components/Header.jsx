@@ -1,6 +1,7 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo2 from '../assets/logo2.svg';
 import styled from 'styled-components';
+import { supabase } from '../supabase/supabase';
 
 const LayoutContainer = styled.div`
   max-width: 100%;
@@ -19,8 +20,8 @@ const LogoImg = styled.img`
 `;
 const NavContainer = styled.div`
   display: flex;
-  gap: 15px; /* 요소 간 간격 */
-  margin-left: auto; /* 오른쪽 정렬 */
+  gap: 15px;
+  margin-left: auto;
 `;
 
 const Text = styled.button`
@@ -28,11 +29,19 @@ const Text = styled.button`
 `;
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const signOutUser = async () => {
-    const { error } = await supabase.auth.signOut();
-    console.log('signout: ', { error }); // data는 딱히 필요없을 듯
-    setUser(null);
-    Navigate('/');
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+
+      console.log('Sign out successful');
+      alert('로그아웃 되었습니다.');
+      navigate('/');
+    } catch (error) {
+      console.error('Error during sign out:', error.message);
+    }
   };
 
   return (
