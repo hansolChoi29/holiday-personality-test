@@ -56,6 +56,7 @@ export const christmass = {
     besttag: '크리스마스 해결사!',
     badtag: '산타클로스의 비서!'
   },
+
   ENTP: {
     mbtititle: '크리스마스 아이디어 마법사!',
     description:
@@ -63,7 +64,7 @@ export const christmass = {
     besttag: '루돌프를 모는 모험가!',
     badtag: '크리스마스의 이론가!'
   },
-  ESFP: {
+  '눈길 위의 크리스마스 스타!': {
     mbtititle: '눈길 위의 크리스마스 스타!',
     description:
       ' 어디서나 주목받는 크리스마스의 주인공! 반짝이는 장식처럼 사람들에게 기쁨을 전파하는 당신은 파티에서 춤추며 모두의 사랑을 받는 존재입니다. 하지만 즉흥적으로 행동하다가 어제 뭐 했더라? 하는 순간도 있을 수 있으니, 때로는 차분히 즐겨보는 것도 추천해요!',
