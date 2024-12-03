@@ -44,13 +44,13 @@ const TestPage = () => {
       // 현재 로그인된 사용자 세션 확인
       const { data: session, error: sessionError } = await supabase.auth.getSession();
 
-      if (sessionError || !session || !session.user) {
+      if (sessionError || !session) {
         alert('로그인이 필요합니다.');
         navigate('/'); // 로그인 페이지로 이동
         return;
       }
 
-      const user = session.user;
+      const user = session.session.user;
 
       // Supabase API를 사용해 결과 저장
       const { data, error } = await supabase.from('results').insert([
