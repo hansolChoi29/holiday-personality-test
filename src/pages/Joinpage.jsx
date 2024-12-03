@@ -141,9 +141,9 @@ const JoinPage = () => {
       });
       hasError = true;
       return;
-
+ 
     } else {
-      
+
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(formStates.email)) {
         setFormErrors({
