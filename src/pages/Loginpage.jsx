@@ -120,6 +120,8 @@ const SingupBtn = styled.button`
   border: none;
   background-color: #fff;
   cursor: pointer;
+  font-weight: bold;
+  color: #08323f;
 `;
 
 const Login = () => {
@@ -129,7 +131,7 @@ const Login = () => {
   const navigate = useNavigate();
   // 로그인 처리 함수
   const handleLogin = async (e) => {
-    e.preventDefault(); // 폼 제출 기본 동작 방지
+    e.preventDefault();
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -139,11 +141,7 @@ const Login = () => {
       if (error) throw error;
 
       console.log('Login successful:', data);
-
-      // 로그인 성공 시 세션 정보를 로컬스토리지에 저장
-      localStorage.setItem('supabase.auth.token', JSON.stringify(data.session));
-
-      alert('Login successful!');
+      alert('로그인 성공!');
       navigate('/testpage'); // 페이지 이동
     } catch (error) {
       console.error('로그인실패!', error.message);
