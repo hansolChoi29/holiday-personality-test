@@ -189,9 +189,8 @@ const JoinPage = () => {
         .from('users')
         .select('*')
         .eq('nickname', formStates.nickname)
-        .single();
 
-      if (nicknameData) {
+      if (nicknameData && nicknameData.length > 0) {
         setFormErrors({
           ...formErrors,
           nickname: '중복된 닉네임이 존재합니다.'
