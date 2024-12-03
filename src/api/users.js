@@ -19,13 +19,15 @@ export const useFetchUserInfo = () => {
 
 // 결과 저장하기
 export const useSaveUserResult = () => {
-  return useMutation(async ({ mbti, description }) => {
+  return useMutation(async ({ userId, mbti, description, mbtititle, besttag, badtag }) => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
       throw new Error('로컬스토리지에서 사용자 ID를 찾을 수 없습니다.');
     }
 
-    const { data, error } = await supabase.from('results').insert([{ mbti, description, id: userId }]);
+    const { data, error } = await supabase
+      .from('results')
+      .insert([{ mbti, description, id: userId, mbtititle, besttag, badtag, created_at: new Date().toISOString() }]);
 
     if (error) throw new Error(error.message);
 

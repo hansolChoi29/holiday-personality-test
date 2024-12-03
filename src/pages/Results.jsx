@@ -180,18 +180,26 @@ const Results = () => {
         error: sessionError
       } = await supabase.auth.getSession();
 
+      console.log('userResult => ', userResult);
+      console.log('Session => ', session);
+      console.log('Session Error => ', sessionError);
+
       if (sessionError || !session) {
         throw new Error('로그인 세션이 없습니다. 다시 로그인해주세요.');
       }
 
       const userId = session.user.id;
+      console.log('session.user.id  => ', session.user.id);
 
       // Supabase에서 사용자 결과 가져오기
       const { data, error: fetchError } = await supabase
         .from('results')
         .select('mbtititle, description, besttag, badtag')
-        .eq('id', userId)
-        .single();
+        .eq('user_id', userId)
+        .single().order('created_at', { ascending: false }).limit(1)
+
+      console.log('Fetched data => ', data);
+      console.log('Fetch Error => ', fetchError);
 
       if (fetchError) throw new Error(fetchError.message);
 
