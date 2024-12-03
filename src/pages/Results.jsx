@@ -91,9 +91,10 @@ const Besttag = styled.p`
   height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
   position: absolute;
-  left: 10%;
+  left: 12%;
   top: 62%;
   color: #b82218;
   font-weight: bold;
@@ -105,6 +106,7 @@ const Badtag = styled.p`
   width: 153px;
   height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
+  text-align: center;
   align-items: center;
   justify-content: center;
   position: absolute;
@@ -120,7 +122,7 @@ const TagLabelbad = styled.p`
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 14%;
+  right: 18%;
   top: 59%; /* 위치 미세 조정 */
   margin: 0;
 `;
@@ -131,7 +133,7 @@ const TagLabelbest = styled.p`
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 62%;
+  right: 54%;
   top: 59%; /* 위치 미세 조정 */
   margin: 0;
 `;
@@ -232,10 +234,10 @@ const Results = () => {
             {/* 설명 */}
             <TagContainer>
               <div>
-                <TagLabelbest>연락 안 될 친구</TagLabelbest>
+                <TagLabelbest>같이 눈사람 만들 친구</TagLabelbest>
                 <Besttag>{userResult.besttag}</Besttag> {/* 설명 */}
               </div>
-              <TagLabelbad>같이 눈사람 만들 친구</TagLabelbad>
+              <TagLabelbad>연락 안 될 친구</TagLabelbad>
               <Badtag>{userResult.badtag}</Badtag> {/* 설명 */}
             </TagContainer>
             {/* 하단 이미지 */}
