@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { supabase } from '../supabase/supabase';
 import snowman from '/snowman.png';
 import socks from '/socks.png';
@@ -9,6 +8,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import background1 from '/background1.png';
 import daeeun_kong from '/daeeun_kong.gif';
+import { useQuery } from '@tanstack/react-query';
 // Styled Components
 const PageWrapper = styled.div`
   background-image: url(${background1}); /* 배경 이미지 설정 */
@@ -27,7 +27,7 @@ const PageWrapper = styled.div`
 
 const ResultContainer = styled.div`
   width: 400px;
-  height: 550px;
+  height: 600px;
   padding: 20px;
   background-color: #67a53b;
   border-radius: 20px;
@@ -46,41 +46,52 @@ const Title = styled.p`
   font-weight: bold;
   color: black;
   text-align: center;
-  padding: 5px;
-  width: 50%;
+  position: absolute;
+  top: 16%; /* 살짝 내림 */
+  padding: 10px; /* 더 넉넉한 여백 */
+  width: 80%;
+  height: auto; /* height 대신 auto로 조정 */
   margin: 10px 0;
 `;
 
 const Description = styled.p`
   width: 90%;
-  padding: 15px;
+  height: auto; /* height를 auto로 변경 */
+  padding: 15px; /* 내부 간격 증가 */
+  line-height: 1.7; /* 줄 간격 조금 넓힘 */
   border-radius: 15px;
-  text-align: justify;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: #333;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   background-color: white;
+
   margin-bottom: 20px;
 `;
 
 const TagContainer = styled.div`
   display: flex; /* Flexbox로 가로 배치 */
   gap: 20px; /* 태그 간 간격 */
-  justify-content: center; /* 중앙 정렬 */
-  margin-bottom: 20px; /* 아래 요소와 간격 */
+  justify-content: space-between; /* 태그를 좌우로 배치 */
+  align-items: center; /* 수직 중앙 정렬 */
+  width: 100%; /* 컨테이너 전체 너비 */
+  margin: 20px 0; /* 위아래 간격 */
 `;
 const Besttag = styled.p`
   background-color: white;
   border-radius: 10px;
   font-size: 15px;
-  width: 150px; /* 고정된 너비 */
-  height: 30px;
+  width: 150px;
+  height: 40px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  right: 10%;
-  top: 64%;
+  left: 10%;
+  top: 65%;
   color: #b82218;
   font-weight: bold;
 `;
@@ -88,14 +99,14 @@ const Badtag = styled.p`
   background-color: white;
   border-radius: 10px;
   font-size: 15px;
-  width: 150px; /* 고정된 너비 */
-  height: 30px;
+  width: 150px;
+  height: 40px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  right: 55%;
-  top: 64%;
+  left: 53%;
+  top: 65%;
   color: #67a53b;
   font-weight: bold;
 `;
@@ -106,9 +117,9 @@ const TagLabelbad = styled.p`
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 12%;
-  top: 63%;
-  margin: 0; /* 태그와의 간격 제거 */
+  right: 14%;
+  top: 61%; /* 위치 미세 조정 */
+  margin: 0;
 `;
 
 const TagLabelbest = styled.p`
@@ -118,7 +129,7 @@ const TagLabelbest = styled.p`
   text-align: center;
   position: absolute;
   right: 62%;
-  top: 63%;
+  top: 61%; /* 위치 미세 조정 */
   margin: 0;
 `;
 const ImageRow = styled.div`
@@ -129,10 +140,10 @@ const ImageRow = styled.div`
 `;
 
 const StyledImage = styled.img`
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 10px;
-  margin: 10px;
+  margin: 10px; /* 간격을 조금 줄임 */
 `;
 const Replay = styled(Link)`
   width: 150px;
@@ -144,60 +155,54 @@ const Replay = styled(Link)`
   font-size: 14px;
   font-weight: bold;
   text-align: center;
+  position: absolute;
+  bottom: 10px;
   &:hover {
     background-color: #f9f468;
     color: red;
   }
 `;
-const Daeeun_kong = styled.img``;
+
 const Results = () => {
-  const [userResult, setUserResult] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    data: userResult,
+    isLoading,
+    error
+  } = useQuery({
+    queryKey: ['results'],
+    queryFn: async () => {
+      // Supabase 세션 확인
+      const {
+        data: { session },
+        error: sessionError
+      } = await supabase.auth.getSession();
 
-  useEffect(() => {
-    const fetchResults = async () => {
-      setLoading(true);
-      try {
-        // Supabase 세션 확인
-        const {
-          data: { session },
-          error
-        } = await supabase.auth.getSession();
-        if (error || !session) {
-          throw new Error('로그인 세션이 없습니다. 다시 로그인해주세요.');
-        }
-
-        const userId = session.user.id;
-
-        // Supabase에서 사용자 결과 가져오기
-        const { data, error: fetchError } = await supabase
-          .from('results')
-          .select('mbtititle, description, besttag, badtag')
-          .eq('id', userId)
-          .single();
-
-        if (fetchError) throw new Error(fetchError.message);
-
-        setUserResult(data); // 결과 저장
-      } catch (err) {
-        setError(err.message);
-        window.location.href = '/Login'; // 로그인 페이지로 리디렉션 수정했슴!!
-      } finally {
-        setLoading(false);
+      if (sessionError || !session) {
+        throw new Error('로그인 세션이 없습니다. 다시 로그인해주세요.');
       }
-    };
 
-    fetchResults();
-  }, []);
+      const userId = session.user.id;
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+      // Supabase에서 사용자 결과 가져오기
+      const { data, error: fetchError } = await supabase
+        .from('results')
+        .select('mbtititle, description, besttag, badtag')
+        .eq('id', userId)
+        .single();
+
+      if (fetchError) throw new Error(fetchError.message);
+
+      return data; // 데이터를 반환
+    }
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <PageWrapper>
-      <Daeeun_kong src={daeeun_kong}></Daeeun_kong>
-      <Daeeun_kong src={daeeun_kong}></Daeeun_kong>
+      <img src={daeeun_kong}></img>
+      <img src={daeeun_kong}></img>
       <ResultContainer>
         {userResult ? (
           <>
@@ -206,10 +211,12 @@ const Results = () => {
               <StyledImage src={star} alt="Star" />
               <StyledImage src={ball} alt="Ball" />
             </ImageRow>
-            {/* 결과 타이틀 */}
-            <Title>{userResult.mbtititle}</Title> {/* 타이틀 */}
-            {/* 결과 설명 */}
-            <Description>{userResult.description}</Description> {/* 설명 */}
+            <Description>
+              {userResult.mbtititle}
+              <br />
+              {userResult.description}
+            </Description>{' '}
+            {/* 설명 */}
             <TagContainer>
               <div>
                 <TagLabelbest>연락 안 될 친구</TagLabelbest>
@@ -230,8 +237,8 @@ const Results = () => {
         )}
         <Replay to="./testpate">다시해보기</Replay>
       </ResultContainer>
-      <Daeeun_kong src={daeeun_kong}></Daeeun_kong>
-      <Daeeun_kong src={daeeun_kong}></Daeeun_kong>
+      <img src={daeeun_kong}></img>
+      <img src={daeeun_kong}></img>
     </PageWrapper>
   );
 };
