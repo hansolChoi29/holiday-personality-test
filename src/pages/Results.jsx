@@ -6,7 +6,7 @@ import star from '/star.png';
 import tree2 from '/tree2.png';
 import ball from '/ball.png';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import background1 from '/background1.png';
 import daeeun_kong from '/daeeun_kong.gif';
 import { useQuery } from '@tanstack/react-query';
@@ -150,9 +150,10 @@ const StyledImage = styled.img`
   border-radius: 10px;
   margin: 10px; /* 간격을 조금 줄임 */
 `;
-const Replay = styled(Link)`
+const Replay = styled.button`
   width: 150px;
   background-color: #f9f468;
+  border: none;
   color: #08323f;
   padding: 10px;
   text-decoration: none;
@@ -169,6 +170,10 @@ const Replay = styled(Link)`
 `;
 
 const Results = () => {
+  const navigate = useNavigate();
+  const handleRetry = () => {
+    navigate('/testpage'); // 절대 경로로 이동
+  };
   const {
     data: userResult,
     isLoading,
@@ -250,7 +255,7 @@ const Results = () => {
         ) : (
           <p>No results found.</p>
         )}
-        <Replay to="./testpage">다시해보기</Replay>
+        <Replay onClick={handleRetry}>다시해보기</Replay>
       </ResultContainer>
       <img src={daeeun_kong}></img>
       <img src={daeeun_kong}></img>
