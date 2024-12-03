@@ -35,11 +35,9 @@ const Title = styled.h1`
 
 const TestPage = () => {
   const navigate = useNavigate();
-  const [result, setResult] = useState(null);
 
   const handleTestSubmit = async (answers) => {
     const mbtiResult = calculateMBTI(answers);
-
     try {
       // 현재 로그인된 사용자 세션 확인
       const { data: session, error: sessionError } = await supabase.auth.getSession();
