@@ -237,7 +237,7 @@ const Results = () => {
         ) : (
           <p>No results found.</p>
         )}
-        <Replay to="./testpate">다시해보기</Replay>
+        <Replay to="./testpage">다시해보기</Replay>
       </ResultContainer>
       <img src={daeeun_kong}></img>
       <img src={daeeun_kong}></img>
