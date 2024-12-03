@@ -70,6 +70,22 @@ const SubmitButton = styled.button`
     background-color: #1e7e34;
   }
 `;
+
+const ProgressBarContainer = styled.div`
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+`;
+
+const ProgressBar = styled.div`
+  height: 8px;
+  background-color: #ffc107;
+  width: ${(props) => props.progress}%;
+  transition: width 0.3s ease;
+`;
+
 const TestForm = ({ onSubmit }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); //현재 보고있는 질문의 번호
   const [answers, setAnswers] = useState([]); //답변을 저장하는 배열
@@ -87,37 +103,36 @@ const TestForm = ({ onSubmit }) => {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1); // 상태 안전하게 업데이트 중복방지!!
     }
   };
-  console.log('currentQuestionIndex', currentQuestionIndex);
-  // 유즈콜백 메모이제이션 사용해보자
+
+  const progress = ((currentQuestionIndex + 1) / questions.length) * 100; // 진행 상황 계산
+
   return (
     <Form>
+      <ProgressBarContainer>
+        <ProgressBar progress={progress} />
+      </ProgressBarContainer>
       <QuestionBlock>
         {/* 질문 번호와 내용 */}
         <QuestionText>{`질문 ${currentQuestionIndex + 1}/${questions.length}`}</QuestionText>
         <QuestionText>{questions[currentQuestionIndex].question}</QuestionText>
         <OptionWrapper>
-          {questions[currentQuestionIndex].options.map(
-            (
-              option,
-              index //옵션버튼 생성
-            ) => (
-              <Fragment key={index}>
-                <OptionLabel
-                  htmlFor={`question-${currentQuestionIndex}`}
-                  $isFirstOption={index === 0} // 첫 번째 옵션은 노란색
-                  onClick={() => handleOptionSelect(option)}
-                >
-                  {option}
-                </OptionLabel>
-                <OptionInput
-                  id={`question-${currentQuestionIndex}`}
-                  type="radio"
-                  name={`question-${currentQuestionIndex}`}
-                  value={option}
-                />
-              </Fragment>
-            )
-          )}
+          {questions[currentQuestionIndex].options.map((option, index) => (
+            <Fragment key={index}>
+              <OptionLabel
+                htmlFor={`question-${currentQuestionIndex}`}
+                $isFirstOption={index === 0} // 첫 번째 옵션은 노란색
+                onClick={() => handleOptionSelect(option)}
+              >
+                {option}
+              </OptionLabel>
+              <OptionInput
+                id={`question-${currentQuestionIndex}`}
+                type="radio"
+                name={`question-${currentQuestionIndex}`}
+                value={option}
+              />
+            </Fragment>
+          ))}
         </OptionWrapper>
       </QuestionBlock>
       {currentQuestionIndex === questions.length - 1 && (

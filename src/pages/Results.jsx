@@ -6,7 +6,7 @@ import star from '/star.png';
 import tree2 from '/tree2.png';
 import ball from '/ball.png';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import background1 from '/background1.png';
 import daeeun_kong from '/daeeun_kong.gif';
 import { useQuery } from '@tanstack/react-query';
@@ -69,7 +69,7 @@ const Description = styled.p`
   align-items: center;
   color: #333;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   background-color: white;
 
   margin-bottom: 20px;
@@ -91,10 +91,11 @@ const Besttag = styled.p`
   height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
   position: absolute;
-  left: 10%;
-  top: 70%;
+  left: 12%;
+  top: 62%;
   color: #b82218;
   font-weight: bold;
 `;
@@ -105,11 +106,12 @@ const Badtag = styled.p`
   width: 153px;
   height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
+  text-align: center;
   align-items: center;
   justify-content: center;
   position: absolute;
   left: 53%;
-  top: 70%;
+  top: 62%;
   color: #67a53b;
   font-weight: bold;
 `;
@@ -120,8 +122,8 @@ const TagLabelbad = styled.p`
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 14%;
-  top: 67%; /* 위치 미세 조정 */
+  right: 18%;
+  top: 59%; /* 위치 미세 조정 */
   margin: 0;
 `;
 
@@ -131,8 +133,8 @@ const TagLabelbest = styled.p`
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 62%;
-  top: 67%; /* 위치 미세 조정 */
+  right: 54%;
+  top: 59%; /* 위치 미세 조정 */
   margin: 0;
 `;
 const ImageRow = styled.div`
@@ -148,9 +150,10 @@ const StyledImage = styled.img`
   border-radius: 10px;
   margin: 10px; /* 간격을 조금 줄임 */
 `;
-const Replay = styled(Link)`
+const Replay = styled.button`
   width: 150px;
   background-color: #f9f468;
+  border: none;
   color: #08323f;
   padding: 10px;
   text-decoration: none;
@@ -167,6 +170,10 @@ const Replay = styled(Link)`
 `;
 
 const Results = () => {
+  const navigate = useNavigate();
+  const handleRetry = () => {
+    navigate('/testpage'); // 절대 경로로 이동
+  };
   const {
     data: userResult,
     isLoading,
@@ -196,9 +203,9 @@ const Results = () => {
         .from('results')
         .select('mbtititle, description, besttag, badtag')
         .eq('user_id', userId)
-        .single()
         .order('created_at', { ascending: false })
-        .limit(1);
+        .limit(1) 
+        .single();
 
       console.log('Fetched data => ', data);
       console.log('Fetch Error => ', fetchError);
@@ -232,10 +239,10 @@ const Results = () => {
             {/* 설명 */}
             <TagContainer>
               <div>
-                <TagLabelbest>연락 안 될 친구</TagLabelbest>
+                <TagLabelbest>같이 눈사람 만들 친구</TagLabelbest>
                 <Besttag>{userResult.besttag}</Besttag> {/* 설명 */}
               </div>
-              <TagLabelbad>같이 눈사람 만들 친구</TagLabelbad>
+              <TagLabelbad>연락 안 될 친구</TagLabelbad>
               <Badtag>{userResult.badtag}</Badtag> {/* 설명 */}
             </TagContainer>
             {/* 하단 이미지 */}
@@ -248,7 +255,7 @@ const Results = () => {
         ) : (
           <p>No results found.</p>
         )}
-        <Replay to="./testpage">다시해보기</Replay>
+        <Replay onClick={handleRetry}>다시해보기</Replay>
       </ResultContainer>
       <img src={daeeun_kong}></img>
       <img src={daeeun_kong}></img>
