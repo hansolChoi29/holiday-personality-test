@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { supabase } from '../supabase/supabase';
 import snowman from '/snowman.png';
 import socks from '/socks.png';
@@ -86,14 +87,14 @@ const Besttag = styled.p`
   background-color: white;
   border-radius: 10px;
   font-size: 15px;
-  width: 150px;
-  height: 40px; /* 높이를 조금 더 넉넉하게 */
+  width: 153px;
+  height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   left: 10%;
-  top: 65%;
+  top: 70%;
   color: #b82218;
   font-weight: bold;
 `;
@@ -101,14 +102,14 @@ const Badtag = styled.p`
   background-color: white;
   border-radius: 10px;
   font-size: 15px;
-  width: 150px;
-  height: 40px; /* 높이를 조금 더 넉넉하게 */
+  width: 153px;
+  height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   left: 53%;
-  top: 65%;
+  top: 70%;
   color: #67a53b;
   font-weight: bold;
 `;
@@ -120,7 +121,7 @@ const TagLabelbad = styled.p`
   text-align: center;
   position: absolute;
   right: 14%;
-  top: 61%; /* 위치 미세 조정 */
+  top: 67%; /* 위치 미세 조정 */
   margin: 0;
 `;
 
@@ -131,7 +132,7 @@ const TagLabelbest = styled.p`
   text-align: center;
   position: absolute;
   right: 62%;
-  top: 61%; /* 위치 미세 조정 */
+  top: 67%; /* 위치 미세 조정 */
   margin: 0;
 `;
 const ImageRow = styled.div`
@@ -151,10 +152,10 @@ const Replay = styled(Link)`
   width: 150px;
   background-color: #f9f468;
   color: #08323f;
-  padding: 15px;
+  padding: 10px;
   text-decoration: none;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
   position: absolute;
@@ -179,18 +180,28 @@ const Results = () => {
         error: sessionError
       } = await supabase.auth.getSession();
 
+      console.log('userResult => ', userResult);
+      console.log('Session => ', session);
+      console.log('Session Error => ', sessionError);
+
       if (sessionError || !session) {
         throw new Error('로그인 세션이 없습니다. 다시 로그인해주세요.');
       }
 
       const userId = session.user.id;
+      console.log('session.user.id  => ', session.user.id);
 
       // Supabase에서 사용자 결과 가져오기
       const { data, error: fetchError } = await supabase
         .from('results')
         .select('mbtititle, description, besttag, badtag')
-        .eq('id', userId)
-        .single();
+        .eq('user_id', userId)
+        .single()
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      console.log('Fetched data => ', data);
+      console.log('Fetch Error => ', fetchError);
 
       if (fetchError) throw new Error(fetchError.message);
 
@@ -237,7 +248,7 @@ const Results = () => {
         ) : (
           <p>No results found.</p>
         )}
-        <Replay to="./testpate">다시해보기</Replay>
+        <Replay to="./testpage">다시해보기</Replay>
       </ResultContainer>
       <img src={daeeun_kong}></img>
       <img src={daeeun_kong}></img>
