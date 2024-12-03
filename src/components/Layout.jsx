@@ -1,13 +1,11 @@
-import Footer from "./Footer";
-import Header from "./Header";
+import React from 'react'
 
 const Layout = () => {
   return (
     <div>
-      <Header />
-      <Footer />
+      
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

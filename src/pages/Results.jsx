@@ -182,7 +182,7 @@ const Results = () => {
         setUserResult(data); // 결과 저장
       } catch (err) {
         setError(err.message);
-        window.location.href = '/login'; // 로그인 페이지로 리디렉션
+        window.location.href = '/Login'; // 로그인 페이지로 리디렉션 수정했슴!!
       } finally {
         setLoading(false);
       }

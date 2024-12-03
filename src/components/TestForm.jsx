@@ -7,99 +7,108 @@ const Form = styled.form`
   padding: 24px;
   background-color: white;
   border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto;
 `;
 
 const QuestionBlock = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 `;
 
 const QuestionText = styled.p`
   font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 12px;
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
 `;
 
 const OptionWrapper = styled.div`
-  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `;
 
 const OptionLabel = styled.label`
-  display: block;
-  padding: 12px;
-  border: 1px solid #ccc;
+  padding: 16px;
   border-radius: 8px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
-  background-color: ${(props) => (props.selected ? '#f5f5f5' : 'transparent')};
+  border: 2px solid transparent;
+  background-color: ${(props) => (props.$isFirstOption ? '#ffc107' : '#fd7e14')}; /* 노란색(위), 주황색(아래) */
+  color: white;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${(props) => (props.$isFirstOption ? '#ffca28' : '#ff9f43')}; /* 밝은 노란색과 주황색 */
   }
 `;
 
 const OptionInput = styled.input`
-  margin-right: 8px;
+  display: none;
 `;
 
 const SubmitButton = styled.button`
   width: 100%;
-  background-color: #007bff;
+  background-color: #28a745;
   color: white;
-  padding: 12px;
+  padding: 16px;
   border-radius: 8px;
   font-weight: bold;
   border: none;
   cursor: pointer;
+  font-size: 16px;
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #218838;
   }
 
   &:active {
-    background-color: #004085;
+    background-color: #1e7e34;
   }
 `;
 
 const TestForm = ({ onSubmit }) => {
-  const [answers, setAnswers] = useState(Array(questions.length).fill({ type: '', answer: '' }));
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState([]);
 
-  const handleChange = (index, value) => {
-    const newAnswers = [...answers];
-    newAnswers[index] = { type: questions[index].type, answer: value };
-    setAnswers(newAnswers);
-  };
+  const handleOptionSelect = (value) => {
+    const updatedAnswers = [...answers];
+    updatedAnswers[currentQuestionIndex] = { type: questions[currentQuestionIndex].type, answer: value };
+    setAnswers(updatedAnswers);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Answers:', answers);
-    onSubmit(answers);
+    // 다음 질문으로 이동
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      {questions.map((q, index) => (
-        <QuestionBlock key={q.id}>
-          <QuestionText>{q.question}</QuestionText>
-          <div>
-            {q.options.map((option, i) => (
-              <OptionWrapper key={i}>
-                <OptionLabel selected={answers[index]?.answer === q.type.split('/')[i]}>
-                  <OptionInput
-                    type="radio"
-                    name={`question-${index}`}
-                    value={q.type.split('/')[i]}
-                    checked={answers[index]?.answer === q.type.split('/')[i]}
-                    onChange={() => handleChange(index, q.type.split('/')[i])}
-                  />
-                  {option}
-                </OptionLabel>
-              </OptionWrapper>
-            ))}
-          </div>
-        </QuestionBlock>
-      ))}
-      <SubmitButton type="submit">제출하기</SubmitButton>
+    <Form>
+      <QuestionBlock>
+        <QuestionText>{`질문 ${currentQuestionIndex + 1}/${questions.length}`}</QuestionText>
+        <QuestionText>{questions[currentQuestionIndex].question}</QuestionText>
+        <OptionWrapper>
+          {questions[currentQuestionIndex].options.map((option, index) => (
+            <OptionLabel
+              key={index}
+              $isFirstOption={index === 0} // 첫 번째 옵션은 노란색
+              onClick={() => handleOptionSelect(option)}
+            >
+              <OptionInput type="radio" name={`question-${currentQuestionIndex}`} value={option} />
+              {option}
+            </OptionLabel>
+          ))}
+        </OptionWrapper>
+      </QuestionBlock>
+      {currentQuestionIndex === questions.length - 1 && (
+        <SubmitButton type="button" onClick={() => onSubmit(answers)}>
+          제출하기
+        </SubmitButton>
+      )}
     </Form>
   );
 };
