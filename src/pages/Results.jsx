@@ -25,7 +25,9 @@ const PageWrapper = styled.div`
   padding: 0;
   box-sizing: border-box; /* 레이아웃 충돌 방지 */
 `;
-
+//  merge
+// merge test
+// merge
 const ResultContainer = styled.div`
   width: 400px;
   height: 600px;
