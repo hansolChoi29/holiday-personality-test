@@ -22,11 +22,7 @@ export const useSaveUserResult = () => {
   return useMutation(async ({ mbti, description }) => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-
-
-      throw new Error("로컬스토리지에서 사용자 ID를 찾을 수 없습니다.");
-
-
+      throw new Error('로컬스토리지에서 사용자 ID를 찾을 수 없습니다.');
     }
 
     const { data, error } = await supabase.from('results').insert([{ mbti, description, id: userId }]);

@@ -2,121 +2,126 @@ import { useState } from 'react';
 import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 import daeeun_kong from '/daeeun_kong.gif';
-import tree from '/tree.png';
-import title from '/title.png';
+import Logo from '../assets/logo.svg';
+import SnowMan from '../assets/snowman.svg';
+
 import styled from 'styled-components';
-const Containerwithcard = styled.div`
-  position: relative;
-  margin-top: 350px;
-`;
+
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
+  height: 100vh; /* 화면 기준 높이 */
+  background-color: #08323f;
+  padding: 0;
+  margin: 0;
+  position: relative;
+`;
+
+const LogoImg = styled.img`
   position: absolute;
-  transform: translateY(-70%);
-  margin-left: 180px;
+  width: 600px;
+  height: auto;
+  filter: brightness(0) invert(1);
+  margin-top: 300px;
+  left: 290px;
+`;
+
+const SnowManImg = styled.img`
+  position: absolute;
+  width: 650px;
+  height: auto;
+  left: 0px;
+  bottom: 0px;
 `;
 
 const Gifimg = styled.img`
   position: absolute;
-  transform: translate(-80px, 170px);
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   z-index: 10;
+  top: 130px;
+  right: 300px;
 `;
 
-const Treeimg = styled.img`
-  position: absolute;
-  bottom: 0;
-  width: 400px;
-  height: 450px;
-  margin-left: 20px;
-`;
 const Box = styled.div`
-  width: 400px;
-  height: 500px;
-  border-radius: 20px;
-  background-color: #e3e3e3;
-  transform: translateY(-30%);
-  right: 150px;
-  padding: 15px;
+  margin-top: 220px;
   position: absolute;
+  right: 290px;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  width: 330px;
 `;
+
 const Title = styled.h1`
-  font-size: 32px;
+  font-size: 36px;
+  color: #08323f;
+  margin-bottom: 27px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 25px;
   text-align: center;
 `;
+
 const Form = styled.form`
-  width: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  gap: 15px; /* 요소 간 간격 */
 `;
-const Label = styled.label`
-  font-size: 16px;
-  color: #666;
-  text-align: left;
-  padding: 10px;
-`;
+
 const Input = styled.input`
-  width: 95%;
-  padding: 10px;
-  margin-top: 7px;
-  margin-bottom: 23px;
-  border: 1px solid #ccc;
+  padding: 17px 26px;
+  font-size: 16px;
+  border: none;
   border-radius: 10px;
-  font-size: 14px;
-  background-color: #f6f6f6;
-  outline: none;
+  background-color: #f3f3f3;
+  color: #08323f;
+
   &:focus {
-    border-color: #ffffff;
-    background-color: #fff;
+    outline: none;
+    border-color: #08323f;
+  }
+
+  &::placeholder {
+    font-size: 14px;
+    color: #08323f;
   }
 `;
 
 const Btn = styled.button`
-  width: 250px;
-  padding: 10px;
-  margin: 20px auto;
-  background-color: #d84137;
-  color: #333;
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #ffffff;
-  &:hover {
-    background-color: #67a53b;
-    color: #000;
-  }
-`;
-
-const SignUpGroup = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
   width: 100%;
-  margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+  color: #08323f;
+  background-color: #f9f468;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #e0d045;
+  }
+`;
+const SingupBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 64px;
+  font-size: 14px;
+  color: #08323f;
 `;
 
-const SignUpBtn = styled.button`
-  width: 150px;
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  background-color: #e3e3e3;
-  color: #333;
+const SingupBtn = styled.button`
   border: none;
-  border-radius: 20px;
-  font-size: 14px;
-
+  background-color: #fff;
   cursor: pointer;
-  transition: all 0.2s ease;
-  &:hover {
-    color: #d84137;
-  }
+  font-weight: bold;
+  color: #08323f;
 `;
 
 const Login = () => {
@@ -126,7 +131,7 @@ const Login = () => {
   const navigate = useNavigate();
   // 로그인 처리 함수
   const handleLogin = async (e) => {
-    e.preventDefault(); // 폼 제출 기본 동작 방지
+    e.preventDefault();
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -136,11 +141,7 @@ const Login = () => {
       if (error) throw error;
 
       console.log('Login successful:', data);
-
-      // 로그인 성공 시 세션 정보를 로컬스토리지에 저장
-      localStorage.setItem('supabase.auth.token', JSON.stringify(data.session));
-
-      alert('Login successful!');
+      alert('로그인 성공!');
       navigate('/testpage'); // 페이지 이동
     } catch (error) {
       console.error('로그인실패!', error.message);
@@ -153,28 +154,27 @@ const Login = () => {
   };
   return (
     <div>
-      <Containerwithcard>
-        <Container>
-          <img src={title}></img>
-          <Gifimg src={daeeun_kong}></Gifimg>
-        </Container>
+      <Container>
+        <LogoImg src={Logo} alt="Logo" />
+        <SnowManImg src={SnowMan} alt="SnowMan" />
+
+        <Gifimg src={daeeun_kong}></Gifimg>
+
         <Box>
           <Title>Login</Title>
           <Form onSubmit={handleLogin}>
-            <Label htmlFor="email">Email:</Label>
             <Input
               type="email"
               id="email"
-              placeholder="Your email address"
+              placeholder="이메일"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <Label htmlFor="password">Password:</Label>
             <Input
               type="password"
               id="password"
-              placeholder="Your password"
+              placeholder="비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -182,13 +182,12 @@ const Login = () => {
             <Btn type="submit">로그인</Btn>
           </Form>
 
-          <SignUpGroup>
+          <SingupBox>
             <p>계정이 없으신가요?</p>
-            <SignUpBtn onClick={handleSingup}>회원가입</SignUpBtn>
-          </SignUpGroup>
+            <SingupBtn onClick={handleSingup}>회원가입</SingupBtn>
+          </SingupBox>
         </Box>
-      </Containerwithcard>
-      <Treeimg src={tree}></Treeimg>
+      </Container>
     </div>
   );
 };
