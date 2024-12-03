@@ -69,7 +69,7 @@ const Description = styled.p`
   align-items: center;
   color: #333;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   background-color: white;
 
   margin-bottom: 20px;
@@ -94,7 +94,7 @@ const Besttag = styled.p`
   justify-content: center;
   position: absolute;
   left: 10%;
-  top: 70%;
+  top: 62%;
   color: #b82218;
   font-weight: bold;
 `;
@@ -109,7 +109,7 @@ const Badtag = styled.p`
   justify-content: center;
   position: absolute;
   left: 53%;
-  top: 70%;
+  top: 62%;
   color: #67a53b;
   font-weight: bold;
 `;
@@ -121,7 +121,7 @@ const TagLabelbad = styled.p`
   text-align: center;
   position: absolute;
   right: 14%;
-  top: 67%; /* 위치 미세 조정 */
+  top: 59%; /* 위치 미세 조정 */
   margin: 0;
 `;
 
@@ -132,7 +132,7 @@ const TagLabelbest = styled.p`
   text-align: center;
   position: absolute;
   right: 62%;
-  top: 67%; /* 위치 미세 조정 */
+  top: 59%; /* 위치 미세 조정 */
   margin: 0;
 `;
 const ImageRow = styled.div`
