@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { supabase } from '../supabase/supabase';
 import styled from 'styled-components';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import daeeun_kong from '/daeeun_kong.gif';
 import background1 from '/background1.png';
 
@@ -11,7 +11,7 @@ const WrappedBox = styled.div`
   align-items: center;
   flex-direction: column;
   height: 100vh;
-`
+`;
 
 const BackgroundSnow = styled.img`
   background-image: url(${background1});
@@ -31,10 +31,10 @@ const SignUpBox = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 400px;
+  width: 300px;
   height: auto;
   border-radius: 20px;
-  background-color: #e3e3e3;
+  background-color: white;
   padding: 15px;
   margin: auto;
 `;
@@ -54,7 +54,6 @@ const InputForm = styled.form`
 `;
 
 const Input = styled.input`
-  width: 95%;
   padding: 10px;
   margin-top: 7px;
   margin-bottom: 0;
@@ -64,9 +63,15 @@ const Input = styled.input`
   background-color: #f6f6f6;
   outline: none;
   &:focus {
-    border-color: #ffffff;
+    border-color: #ccc;
     background-color: #fff;
   }
+`;
+
+const ErrorMessage = styled.span`
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 `;
 
 const SignUpBtn = styled.button`
@@ -93,72 +98,86 @@ const CharacterImage = styled.img`
 `;
 
 const JoinPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [user, setUser] = useState('');
+  const navigate = useNavigate();
 
-  const onChangeEmail = (e) => {
-    setEmail(e.target.value);
-  };
+  const [formStates, setFormStates] = useState({
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    nickname: ''
+  });
 
-  const onChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const onChangePasswordConfirm = (e) => {
-    setPasswordConfirm(e.target.value);
-  };
-
-  const onChangeNickname = (e) => {
-    setNickname(e.target.value);
-  };
-
-  // 인증상태 체크
-  useEffect(() => {
-    const {
-      data: { subscription }
-    } = supabase.auth.onAuthStateChange((_, session) => {
-      if (session) {
-        setUser(session.user);
-      } else {
-        setUser(null);
-      }
+  // 입력값 관리 함수
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setFormStates({
+      ...formStates,
+      [name]: value
     });
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+
+    setFormErrors({
+      ...formErrors,
+      [name]: ''
+    });
+  };
+
+  const [formErrors, setFormErrors] = useState({
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    nickname: ''
+  });
 
   // 회원가입
   const signUpNewUser = async (e) => {
     e.preventDefault();
+    let hasError = false;
 
     // 입력 데이터 검증
-    if (!email) {
-      alert('이메일을 입력해주세요.');
+    if (!formStates.email) {
+      setFormErrors({
+        ...formErrors,
+        email: '이메일을 입력해주세요.'
+      });
+      hasError = true;
+      return;
+    } else {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(formStates.email)) {
+        setFormErrors({
+          ...formErrors,
+          email: '이메일 형식이 올바르지 않습니다.'
+        });
+
+        hasError = true;
+        return;
+      }
+    }
+
+    if (formStates.password.length < 8) {
+      setFormErrors({
+        ...formErrors,
+        password: '비밀번호를 8자 이상 입력해 주세요.'
+      });
+      hasError = true;
       return;
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      alert('이메일 형식이 올바르지 않습니다.');
+    if (formStates.password !== formStates.passwordConfirm) {
+      setFormErrors({
+        ...formErrors,
+        passwordConfirm: '비밀번호가 일치하지 않습니다.'
+      });
+      hasError = true;
       return;
     }
 
-    if (password.length < 8) {
-      alert('비밀번호 8자 이상 입력해 주세요.');
-      return;
-    }
-
-    if (password !== passwordConfirm) {
-      alert('비밀번호가 일치하지 않습니다.');
-      return;
-    }
-
-    if (!nickname) {
-      alert('닉네임을 입력해주세요.');
+    if (!formStates.nickname) {
+      setFormErrors({
+        ...formErrors,
+        nickname: '닉네임을 입력해주세요.'
+      });
+      hasError = true;
       return;
     }
 
@@ -167,22 +186,26 @@ const JoinPage = () => {
       const { data: nicknameData, error: nicknameError } = await supabase
         .from('users')
         .select('*')
-        .eq('nickname', nickname)
+        .eq('nickname', formStates.nickname)
         .single();
 
       if (nicknameData) {
-        alert('중복된 닉네임이 존재합니다.');
+        setFormErrors({
+          ...formErrors,
+          nickname: '중복된 닉네임이 존재합니다.'
+        });
+        hasError = true;
         return;
       }
 
       // 회원가입 진행
       const { data, error } = await supabase.auth.signUp({
-        email,
-        password
+        email: formStates.email,
+        password: formStates.password
       });
 
       if (error) {
-        console.error('회원가입 에러 => ', error);
+        console.error('회원가입 에러 => ', error.message);
         alert('회원가입 에러');
         return;
       }
@@ -190,50 +213,74 @@ const JoinPage = () => {
       // 닉네임 저장
       const { data: insertData, error: insertError } = await supabase
         .from('users')
-        .insert([{ id: data.user.id, nickname }]);
+        .insert([{ id: data.user.id, nickname: formStates.nickname }]);
 
       if (insertError) {
-        console.error('닉네임 저장 에러 => ', insertError);
+        console.error('닉네임 저장 에러 => ', insertError.message);
         alert('닉네임 저장 에러');
         return;
       }
 
-      alert('회원가입 완료');
+      setFormStates({
+        email: '',
+        password: '',
+        passwordConfirm: '',
+        nickname: ''
+      });
 
-      setIsSignUpMode(false);
-      setEmail('');
-      setPassword('');
-      setNickname('');
+      setFormErrors({
+        email: '',
+        password: '',
+        nickname: '',
+        passwordConfirm: ''
+      });
+
+      alert('회원가입 성공!');
+
+      navigate('/');
     } catch (error) {
       console.log('회원가입 에러 => ', error);
     }
   };
 
-  if (!user) {
-    return (
-      <WrappedBox>
-        <BackgroundSnow src={background1} />
-        <SignUpBox>
-          <SignUpTitle>Join</SignUpTitle>
-          <InputForm onSubmit={signUpNewUser}>
-            <Input type="email" placeholder="Email" value={email} onChange={onChangeEmail} />
-            <Input type="password" placeholder="Password" value={password} onChange={onChangePassword} />
-            <Input
-              type="password"
-              placeholder="PasswordConfirm"
-              value={passwordConfirm}
-              onChange={onChangePasswordConfirm}
-            />
-            <Input type="text" placeholder="Nickname" value={nickname} onChange={onChangeNickname} />
-            <CharacterImage src={daeeun_kong} />
-            <SignUpBtn>회원가입</SignUpBtn>
-          </InputForm>
-        </SignUpBox>
-      </WrappedBox>
-    );
-  } else {
-    return <Navigate to="/" />;
-  }
+  return (
+    <WrappedBox>
+      <BackgroundSnow src={background1} />
+      <SignUpBox>
+        <SignUpTitle>Join</SignUpTitle>
+        <InputForm onSubmit={signUpNewUser}>
+          <Input type="text" placeholder="Email" name="email" value={formStates.email} onChange={onChangeHandler} />
+          {formErrors.email && <ErrorMessage>{formErrors.email}</ErrorMessage>}
+          <Input
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={formStates.password}
+            onChange={onChangeHandler}
+          />
+          {formErrors.password && <ErrorMessage>{formErrors.password}</ErrorMessage>}
+          <Input
+            type="password"
+            placeholder="PasswordConfirm"
+            name="passwordConfirm"
+            value={formStates.passwordConfirm}
+            onChange={onChangeHandler}
+          />
+          {formErrors.passwordConfirm && <ErrorMessage>{formErrors.passwordConfirm}</ErrorMessage>}
+          <Input
+            type="text"
+            placeholder="Nickname"
+            name="nickname"
+            value={formStates.nickname}
+            onChange={onChangeHandler}
+          />
+          {formErrors.nickname && <ErrorMessage>{formErrors.nickname}</ErrorMessage>}
+          <CharacterImage src={daeeun_kong} />
+          <SignUpBtn>회원가입</SignUpBtn>
+        </InputForm>
+      </SignUpBox>
+    </WrappedBox>
+  );
 };
 
 export default JoinPage;
