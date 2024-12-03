@@ -87,14 +87,14 @@ const Besttag = styled.p`
   background-color: white;
   border-radius: 10px;
   font-size: 15px;
-  width: 150px;
-  height: 40px; /* 높이를 조금 더 넉넉하게 */
+  width: 153px;
+  height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   left: 10%;
-  top: 65%;
+  top: 70%;
   color: #b82218;
   font-weight: bold;
 `;
@@ -102,14 +102,14 @@ const Badtag = styled.p`
   background-color: white;
   border-radius: 10px;
   font-size: 15px;
-  width: 150px;
-  height: 40px; /* 높이를 조금 더 넉넉하게 */
+  width: 153px;
+  height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   left: 53%;
-  top: 65%;
+  top: 70%;
   color: #67a53b;
   font-weight: bold;
 `;
@@ -121,7 +121,7 @@ const TagLabelbad = styled.p`
   text-align: center;
   position: absolute;
   right: 14%;
-  top: 61%; /* 위치 미세 조정 */
+  top: 67%; /* 위치 미세 조정 */
   margin: 0;
 `;
 
@@ -132,7 +132,7 @@ const TagLabelbest = styled.p`
   text-align: center;
   position: absolute;
   right: 62%;
-  top: 61%; /* 위치 미세 조정 */
+  top: 67%; /* 위치 미세 조정 */
   margin: 0;
 `;
 const ImageRow = styled.div`
@@ -152,10 +152,10 @@ const Replay = styled(Link)`
   width: 150px;
   background-color: #f9f468;
   color: #08323f;
-  padding: 15px;
+  padding: 10px;
   text-decoration: none;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
   position: absolute;
@@ -196,7 +196,9 @@ const Results = () => {
         .from('results')
         .select('mbtititle, description, besttag, badtag')
         .eq('user_id', userId)
-        .single().order('created_at', { ascending: false }).limit(1)
+        .single()
+        .order('created_at', { ascending: false })
+        .limit(1);
 
       console.log('Fetched data => ', data);
       console.log('Fetch Error => ', fetchError);
