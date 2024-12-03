@@ -1,3 +1,4 @@
+
 import { Link, useNavigate } from 'react-router-dom';
 import Logo2 from '../assets/logo2.svg';
 import styled from 'styled-components';
@@ -57,4 +58,3 @@ const Header = () => {
   );
 };
 
-export default Header;

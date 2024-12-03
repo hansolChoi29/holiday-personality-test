@@ -127,7 +127,6 @@ const SingupBtn = styled.button`
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const navigate = useNavigate();
   // 로그인 처리 함수
   const handleLogin = async (e) => {
