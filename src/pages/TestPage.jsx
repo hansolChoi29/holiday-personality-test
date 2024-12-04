@@ -33,7 +33,7 @@ const ContentContainer = styled.div`
   padding: 20px;
   background-color: white;
   border-radius: 20px;
-  border: 15px solid :white;
+  border: 15px solid #D84137;
   font-family: 'Arial', sans-serif;
   display: flex;
   flex-direction: column;
@@ -46,12 +46,30 @@ const Title = styled.h1`
   color: #333;
   text-align: center;
   margin-bottom: 16px;
+  color: black;
 `;
+const Gifimg = styled.img`
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  z-index: 10;
+  top: 450px;
+  right: 250px;
+`; 
+const Gifimg1 = styled.img`
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  z-index: 10;
+  top: 450px;
+  right: 50px;
+`; 
+
+
 const TestPage = () => {
   const navigate = useNavigate();
   const [result, setResult] = useState(null);
 
-  
   const handleTestSubmit = async (answers) => {
     const mbtiResult = calculateMBTI(answers);
     try {
@@ -88,12 +106,14 @@ const TestPage = () => {
   };
   return (
     <PageWrapper>
-    <PageContainer>
-      <ContentContainer>
-        <Title>☃크리스마스 성격 테스트☃</Title>
-        <TestForm onSubmit={handleTestSubmit} />
-      </ContentContainer>
-    </PageContainer>
+      <PageContainer>
+        <ContentContainer>
+          <Title>☃크리스마스 성격 테스트☃</Title>
+          <TestForm onSubmit={handleTestSubmit} />
+          <Gifimg src="http://localhost:5173/daeeun_kong.gif" alt="대은콩"></Gifimg>
+          <Gifimg1 src="http://localhost:5173/daeeun_kong.gif" alt="대은콩"></Gifimg1>
+        </ContentContainer>
+      </PageContainer>
     </PageWrapper>
   );
 };
