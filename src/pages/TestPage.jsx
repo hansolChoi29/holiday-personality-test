@@ -4,6 +4,9 @@ import TestForm from '../components/TestForm';
 import { useNavigate } from 'react-router-dom';
 import { calculateMBTI, christmass } from '../utils/chistmassCalculator';
 import { supabase } from '../supabase/supabase';
+import daeeun_kong from '/daeeun_kong.gif';
+
+
 // 스타일드 컴포넌트 정의
 const PageWrapper = styled.div`
   background-size: cover; /* 배경 이미지를 전체 화면에 맞춤 */
@@ -17,7 +20,7 @@ const PageWrapper = styled.div`
   margin: 0;
   padding: 0;
   box-sizing: border-box; /* 레이아웃 충돌 방지 */
-  background-image: url('http://localhost:5173/background1.png');
+  background-image: url(${background1});
 `;
 const PageContainer = styled.div`
   display: flex;
@@ -140,8 +143,8 @@ const TestPage = () => {
         <ContentContainer>
           <Title>☃크리스마스 성격 테스트☃</Title>
           <TestForm onSubmit={handleTestSubmit} />
-          <Gifimg src="http://localhost:5173/daeeun_kong.gif" alt="대은콩"></Gifimg>
-          <Gifimg1 src="http://localhost:5173/daeeun_kong.gif" alt="대은콩"></Gifimg1>
+          <Gifimg src={daeeun_kong} alt="Gif" />
+          <Gifimg1 src={daeeun_kong} alt="Gif" />
         </ContentContainer>
       </PageContainer>
     </PageWrapper>
