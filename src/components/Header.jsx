@@ -1,8 +1,8 @@
-
 import { Link, useNavigate } from 'react-router-dom';
 import Logo2 from '../assets/logo2.svg';
 import styled from 'styled-components';
 import { supabase } from '../supabase/supabase';
+import { useUserStore } from '../zustand/useUserStore';
 
 const LayoutContainer = styled.div`
   max-width: 100%;
@@ -30,6 +30,7 @@ const Text = styled.button`
 `;
 
 const Header = () => {
+  const { logout } = useUserStore();
   const navigate = useNavigate();
 
   const signOutUser = async () => {
@@ -39,6 +40,7 @@ const Header = () => {
 
       console.log('Sign out successful');
       alert('로그아웃 되었습니다.');
+      logout();
       navigate('/');
     } catch (error) {
       console.error('Error during sign out:', error.message);
@@ -58,3 +60,4 @@ const Header = () => {
   );
 };
 
+export default Header;
