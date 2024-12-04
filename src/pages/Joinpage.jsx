@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 import daeeun_kong from '/daeeun_kong.gif';
 import background1 from '/background1.png';
-import useStore from '../zustand/store';
 import {
   BackgroundSnow,
   CharacterImage,
@@ -14,18 +14,39 @@ import {
   SignUpTitle,
   WrappedBox
 } from '../styles/JoinPageStyles';
+import { useUserStore } from '../zustand/useUserStore';
 
 const JoinPage = () => {
-  const { formStates, formErrors, setFormStates, setFormErrors, resetForm } = useStore();
+  const { login, user } = useUserStore();
   const navigate = useNavigate();
+
+  const [formStates, setFormStates] = useState({
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    nickname: ''
+  });
 
   // 입력값 관리 함수
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    setFormStates({ [name]: value });
+    setFormStates({
+      ...formStates,
+      [name]: value
+    });
 
-    setFormErrors({ [name]: '' });
+    setFormErrors({
+      ...formErrors,
+      [name]: ''
+    });
   };
+
+  const [formErrors, setFormErrors] = useState({
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    nickname: ''
+  });
 
   // 회원가입
   const signUpNewUser = async (e) => {
@@ -34,32 +55,48 @@ const JoinPage = () => {
 
     // 입력 데이터 검증
     if (!formStates.email) {
-      setFormErrors({ email: '이메일을 입력해주세요.' });
+      setFormErrors({
+        ...formErrors,
+        email: '이메일을 입력해주세요.'
+      });
       hasError = true;
       return;
     } else {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(formStates.email)) {
-        setFormErrors({ email: '이메일 형식이 올바르지 않습니다.' });
+        setFormErrors({
+          ...formErrors,
+          email: '이메일 형식이 올바르지 않습니다.'
+        });
+
         hasError = true;
         return;
       }
     }
 
     if (formStates.password.length < 8) {
-      setFormErrors({ password: '비밀번호를 8자 이상 입력해 주세요.' });
+      setFormErrors({
+        ...formErrors,
+        password: '비밀번호를 8자 이상 입력해 주세요.'
+      });
       hasError = true;
       return;
     }
 
     if (formStates.password !== formStates.passwordConfirm) {
-      setFormErrors({ passwordConfirm: '비밀번호가 일치하지 않습니다.' });
+      setFormErrors({
+        ...formErrors,
+        passwordConfirm: '비밀번호가 일치하지 않습니다.'
+      });
       hasError = true;
       return;
     }
 
     if (!formStates.nickname) {
-      setFormErrors({ nickname: '닉네임을 입력해주세요.' });
+      setFormErrors({
+        ...formErrors,
+        nickname: '닉네임을 입력해주세요.'
+      });
       hasError = true;
       return;
     }
@@ -73,7 +110,10 @@ const JoinPage = () => {
         .maybeSingle();
 
       if (nicknameData) {
-        setFormErrors({ nickname: '중복된 닉네임이 존재합니다.' });
+        setFormErrors({
+          ...formErrors,
+          nickname: '중복된 닉네임이 존재합니다.'
+        });
         hasError = true;
         return;
       }
@@ -101,7 +141,27 @@ const JoinPage = () => {
         return;
       }
 
-      resetForm();
+      // 유저 상태 저장
+      login({
+        id: data.user.id,
+        email: formStates.email,
+        nickname: formStates.nickname
+      });
+
+      setFormStates({
+        email: '',
+        password: '',
+        passwordConfirm: '',
+        nickname: ''
+      });
+
+      setFormErrors({
+        email: '',
+        password: '',
+        nickname: '',
+        passwordConfirm: ''
+      });
+
       alert('회원가입 성공!');
       navigate('/');
     } catch (error) {
