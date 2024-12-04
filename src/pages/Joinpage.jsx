@@ -163,7 +163,7 @@ const JoinPage = () => {
       });
 
       alert('회원가입 성공!');
-      navigate('/');
+      navigate('/testpage');
     } catch (error) {
       console.log('회원가입 에러 => ', error);
     }
@@ -202,7 +202,7 @@ const JoinPage = () => {
           />
           {formErrors.nickname && <ErrorMessage>{formErrors.nickname}</ErrorMessage>}
           <CharacterImage src={daeeun_kong} />
-          <SignUpBtn>회원가입</SignUpBtn>
+          <SignUpBtn>테스트 하러 가기 !</SignUpBtn>
         </InputForm>
       </SignUpBox>
     </WrappedBox>
