@@ -6,7 +6,7 @@ import star from '/star.png';
 import tree2 from '/tree2.png';
 import ball from '/ball.png';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import background1 from '/background1.png';
 import daeeun_kong from '/daeeun_kong.gif';
 import { useQuery } from '@tanstack/react-query';
@@ -30,7 +30,7 @@ const PageWrapper = styled.div`
 // merge
 const ResultContainer = styled.div`
   width: 400px;
-  height: 600px;
+  height: 650px;
   padding: 20px;
   background-color: #67a53b;
   border-radius: 20px;
@@ -42,24 +42,9 @@ const ResultContainer = styled.div`
   position: relative;
 `;
 
-const Title = styled.p`
-  font-size: 20px;
-  background-color: white;
-  border-radius: 10px;
-  font-weight: bold;
-  color: black;
-  text-align: center;
-  position: absolute;
-  top: 16%; /* 살짝 내림 */
-  padding: 10px; /* 더 넉넉한 여백 */
-  width: 80%;
-  height: auto; /* height 대신 auto로 조정 */
-  margin: 10px 0;
-`;
-
 const Description = styled.p`
   width: 90%;
-  height: auto; /* height를 auto로 변경 */
+  height: 250px; /* height를 auto로 변경 */
   padding: 15px; /* 내부 간격 증가 */
   line-height: 1.7; /* 줄 간격 조금 넓힘 */
   border-radius: 15px;
@@ -71,7 +56,6 @@ const Description = styled.p`
   font-weight: bold;
   font-size: 16px;
   background-color: white;
-
   margin-bottom: 20px;
 `;
 
@@ -91,10 +75,11 @@ const Besttag = styled.p`
   height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
   position: absolute;
-  left: 10%;
-  top: 62%;
+  left: 12%;
+  top: 70%;
   color: #b82218;
   font-weight: bold;
 `;
@@ -105,11 +90,12 @@ const Badtag = styled.p`
   width: 153px;
   height: 42px; /* 높이를 조금 더 넉넉하게 */
   display: flex;
+  text-align: center;
   align-items: center;
   justify-content: center;
   position: absolute;
   left: 53%;
-  top: 62%;
+  top: 70%;
   color: #67a53b;
   font-weight: bold;
 `;
@@ -120,8 +106,8 @@ const TagLabelbad = styled.p`
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 14%;
-  top: 59%; /* 위치 미세 조정 */
+  right: 18%;
+  top: 67%; /* 위치 미세 조정 */
   margin: 0;
 `;
 
@@ -131,8 +117,8 @@ const TagLabelbest = styled.p`
   font-weight: bold;
   text-align: center;
   position: absolute;
-  right: 62%;
-  top: 59%; /* 위치 미세 조정 */
+  right: 54%;
+  top: 67%; /* 위치 미세 조정 */
   margin: 0;
 `;
 const ImageRow = styled.div`
@@ -148,9 +134,18 @@ const StyledImage = styled.img`
   border-radius: 10px;
   margin: 10px; /* 간격을 조금 줄임 */
 `;
-const Replay = styled(Link)`
+const StyledImage1 = styled.img`
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  margin: 10px; /* 간격을 조금 줄임 */
+  position: relative;
+  top: 20px; /* 원하는 만큼 아래로 내림 */
+`;
+const Replay = styled.button`
   width: 150px;
   background-color: #f9f468;
+  border: none;
   color: #08323f;
   padding: 10px;
   text-decoration: none;
@@ -167,6 +162,10 @@ const Replay = styled(Link)`
 `;
 
 const Results = () => {
+  const navigate = useNavigate();
+  const handleRetry = () => {
+    navigate('/testpage'); // 절대 경로로 이동
+  };
   const {
     data: userResult,
     isLoading,
@@ -198,7 +197,7 @@ const Results = () => {
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single()
+        .single();
 
       console.log('Fetched data => ', data);
       console.log('Fetch Error => ', fetchError);
@@ -232,23 +231,23 @@ const Results = () => {
             {/* 설명 */}
             <TagContainer>
               <div>
-                <TagLabelbest>연락 안 될 친구</TagLabelbest>
+                <TagLabelbest>같이 눈사람 만들 친구</TagLabelbest>
                 <Besttag>{userResult.besttag}</Besttag> {/* 설명 */}
               </div>
-              <TagLabelbad>같이 눈사람 만들 친구</TagLabelbad>
+              <TagLabelbad>연락 안 될 친구</TagLabelbad>
               <Badtag>{userResult.badtag}</Badtag> {/* 설명 */}
             </TagContainer>
             {/* 하단 이미지 */}
             <ImageRow position="bottom">
-              <StyledImage src={snowman} alt="Snowman" />
-              <StyledImage src={tree2} alt="Tree" />
-              <StyledImage src={socks} alt="Socks" />
+              <StyledImage1 src={snowman} alt="Snowman" />
+              <StyledImage1 src={tree2} alt="Tree" />
+              <StyledImage1 src={socks} alt="Socks" />
             </ImageRow>
           </>
         ) : (
           <p>No results found.</p>
         )}
-        <Replay to="./testpage">다시해보기</Replay>
+        <Replay onClick={handleRetry}>다시해보기</Replay>
       </ResultContainer>
       <img src={daeeun_kong}></img>
       <img src={daeeun_kong}></img>
