@@ -5,7 +5,8 @@ import Loginpage from '../pages/Loginpage';
 import Joinpage from '../pages/Joinpage';
 import Results from '../pages/Results';
 import Mypage from '../pages/Mypage';
-import TestPage from '../pages/Testpage';
+import TestPage from '../pages/TestPage';
+
 
 const Router = () => {
   return (
