@@ -27,6 +27,16 @@ const NavContainer = styled.div`
 
 const Text = styled.button`
   cursor: pointer;
+  border: none;
+  background-color: #b82218;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+`;
+
+const LinkMyPage = styled(Link)`
+  color: #fff;
+  text-decoration-line: none;
 `;
 
 const Header = () => {
@@ -53,7 +63,7 @@ const Header = () => {
       <NavContainer>
         <Text onClick={signOutUser}>LOGOUT</Text>
         <Text>
-          <Link to="/mypage">MY PAGE</Link>
+          <LinkMyPage to="/mypage">MY PAGE</LinkMyPage>
         </Text>
       </NavContainer>
     </LayoutContainer>
