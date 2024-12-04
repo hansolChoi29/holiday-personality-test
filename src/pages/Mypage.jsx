@@ -237,4 +237,3 @@ const Mypage = () => {
 };
 
 export default Mypage;
-w
