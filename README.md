@@ -1,6 +1,9 @@
 ## 👨‍🏫  PROJECT: 크리스마스에 나는 뭐할까?
 "크리스마스에 나는 뭐할까?" 프로젝트는 사용자의 MBTI 성향에 따라 크리스마스를 보내는 스타일과 성격을 재미있게 분석해주는 테스트입니다. 질문에 답하면 결과를 통해 나만의 크리스마스 역할과 이야기를 확인할 수 있으며, 이를 통해 연말 분위기를 더욱 따뜻하고 즐겁게 만들어줍니다.
 
+![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FoIFm5%2FbtsK6p8Gje9%2FfkAvetKoiJcc25OQAkJIo0%2Fimg.png)   
+
+
 ## 📖 목차 
 1. [프로젝트 소개](#프로젝트-소개) 
 2.  [팀소개](#팀소개) 
@@ -108,7 +111,10 @@ id, email, nickname 등.
 user_id, mbtititle, description, besttag, badtag, created_at 등.
 
 ## 와이어프레임 
-// 사진
+
+![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtfX3L%2FbtsK6MJiwbZ%2FknjQtm9AfMsMmQkwZRuvLK%2Fimg.png)   
+
+
 ## API 명세서
 > 사용자 인증 (Authentication)
 1. 회원가입
