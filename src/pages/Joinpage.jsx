@@ -3,6 +3,7 @@ import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 import daeeun_kong from '/daeeun_kong.gif';
 import background1 from '/background1.png';
+import { useUserStore } from '../zustand/useUserStore';
 import {
   BackgroundSnow,
   CharacterImage,
@@ -14,7 +15,6 @@ import {
   SignUpTitle,
   WrappedBox
 } from '../styles/JoinPageStyles';
-import { useUserStore } from '../zustand/useUserStore';
 
 const JoinPage = () => {
   const { login, user } = useUserStore();
