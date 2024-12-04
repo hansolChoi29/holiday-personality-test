@@ -1,16 +1,16 @@
-// 로그인한 유저를 저장하면 
-// 메인 페이지, 마이페이지, 결과페이지, 테스트 페이지 등에서 
-// 다 유저정보를 쓸 수 있다.
-
-import { create } from "zustand";
+import { create } from 'zustand';
 
 export const useUserStore = create((set) => ({
-	user: null,
-	login: (userData) => {
-		set({ user: userData })
-	},
-	logout: () => {
-		set({ user: null })
-	}
-}))
+  // user의 초기값
+  user: null,
+  // user를 바꾸는 함수
+  // 1. 로그인
+  login: (userData) => {
+    set({ user: userData });
+  },
+  // 2. 로그아웃: 유저 정보를 null로 다시 되돌린다.
+  logout: () => {
+    set({ user: null });
+  }
+}));
 
