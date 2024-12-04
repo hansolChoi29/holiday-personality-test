@@ -1,8 +1,8 @@
-
 import { Link, useNavigate } from 'react-router-dom';
 import Logo2 from '../assets/logo2.svg';
 import styled from 'styled-components';
 import { supabase } from '../supabase/supabase';
+import { useUserStore } from '../zustand/useUserStore';
 
 const LayoutContainer = styled.div`
   max-width: 100%;
@@ -27,9 +27,20 @@ const NavContainer = styled.div`
 
 const Text = styled.button`
   cursor: pointer;
+  border: none;
+  background-color: #b82218;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+`;
+
+const LinkMyPage = styled(Link)`
+  color: #fff;
+  text-decoration-line: none;
 `;
 
 const Header = () => {
+  const { logout } = useUserStore();
   const navigate = useNavigate();
 
   const signOutUser = async () => {
@@ -39,6 +50,7 @@ const Header = () => {
 
       console.log('Sign out successful');
       alert('로그아웃 되었습니다.');
+      logout();
       navigate('/');
     } catch (error) {
       console.error('Error during sign out:', error.message);
@@ -51,10 +63,11 @@ const Header = () => {
       <NavContainer>
         <Text onClick={signOutUser}>LOGOUT</Text>
         <Text>
-          <Link to="/mypage">MY PAGE</Link>
+          <LinkMyPage to="/mypage">MY PAGE</LinkMyPage>
         </Text>
       </NavContainer>
     </LayoutContainer>
   );
 };
 
+export default Header;

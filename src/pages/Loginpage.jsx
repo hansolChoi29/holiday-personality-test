@@ -1,11 +1,12 @@
+// 로그인
 import { useState } from 'react';
 import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 import daeeun_kong from '/daeeun_kong.gif';
 import Logo from '../assets/logo.svg';
 import SnowMan from '../assets/snowman.svg';
-
 import styled from 'styled-components';
+import { useUserStore } from '../zustand/useUserStore';
 
 const Container = styled.div`
   display: flex;
@@ -125,9 +126,13 @@ const SingupBtn = styled.button`
 `;
 
 const Login = () => {
+  // zustand 상태 불러오기
+  const { user, login } = useUserStore();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
   // 로그인 처리 함수
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -140,25 +145,38 @@ const Login = () => {
       if (error) throw error;
 
       console.log('Login successful:', data);
+      // zustand에 유저 정보 저장
+      login(data.user);
       alert('로그인 성공!');
       navigate('/testpage'); // 페이지 이동
     } catch (error) {
-      console.error('로그인실패!', error.message);
+      console.error('로그인 실패!', error.message);
       alert(`Login failed: ${error.message}`);
     }
   };
+  console.log(user);
+  const handleLogout = () => {
+    supabase.auth.signOut();
+    login(null); // Zustand 상태 초기화
+    alert('로그아웃 되었습니다.');
+  };
 
-  const handleSingup = () => {
+  const handleSignup = () => {
     navigate('./joinpage');
   };
+
   return (
-    <div>
-      <Container>
-        <LogoImg src={Logo} alt="Logo" />
-        <SnowManImg src={SnowMan} alt="SnowMan" />
+    <Container>
+      <LogoImg src={Logo} alt="Logo" />
+      <SnowManImg src={SnowMan} alt="SnowMan" />
+      <Gifimg src={daeeun_kong} alt="Gif" />
 
-        <Gifimg src={daeeun_kong}></Gifimg>
+      {user ? ( // 로그인 상태 확인
+        // 로그인된 경우 버튼만 렌더링
 
+        <Btn onClick={handleLogout}>로그아웃</Btn>
+      ) : (
+        // 로그인되지 않은 경우 로그인 박스 렌더링
         <Box>
           <Title>Login</Title>
           <Form onSubmit={handleLogin}>
@@ -180,14 +198,13 @@ const Login = () => {
             />
             <Btn type="submit">로그인</Btn>
           </Form>
-
           <SingupBox>
             <p>계정이 없으신가요?</p>
-            <SingupBtn onClick={handleSingup}>회원가입</SingupBtn>
+            <SingupBtn onClick={handleSignup}>회원가입</SingupBtn>
           </SingupBox>
         </Box>
-      </Container>
-    </div>
+      )}
+    </Container>
   );
 };
 
