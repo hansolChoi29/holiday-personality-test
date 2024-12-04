@@ -1,3 +1,4 @@
+// 마이페이지
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase/supabase';

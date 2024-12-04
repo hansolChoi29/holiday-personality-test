@@ -1,11 +1,12 @@
+// 로그인
 import { useState } from 'react';
 import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 import daeeun_kong from '/daeeun_kong.gif';
 import Logo from '../assets/logo.svg';
 import SnowMan from '../assets/snowman.svg';
-
 import styled from 'styled-components';
+import { useUserStore } from '../zustand/useUserStore';
 
 const Container = styled.div`
   display: flex;
@@ -125,6 +126,9 @@ const SingupBtn = styled.button`
 `;
 
 const Login = () => {
+  // zustand 불러오기
+  const { login } = useUserStore();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -139,7 +143,11 @@ const Login = () => {
 
       if (error) throw error;
 
+      // TODO: 넣고 싶은 정보는 알아서 변경하세요~
+
       console.log('Login successful:', data);
+      // zustand에 유저 정보 넣기
+      login(data.user);
       alert('로그인 성공!');
       navigate('/testpage'); // 페이지 이동
     } catch (error) {
