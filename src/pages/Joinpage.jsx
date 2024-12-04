@@ -1,103 +1,23 @@
 import { useState } from 'react';
 import { supabase } from '../supabase/supabase';
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import daeeun_kong from '/daeeun_kong.gif';
 import background1 from '/background1.png';
-
-const WrappedBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-const BackgroundSnow = styled.img`
-  background-image: url(${background1});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-`;
-
-const SignUpBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 300px;
-  height: auto;
-  border-radius: 20px;
-  background-color: white;
-  padding: 15px;
-  margin: auto;
-`;
-
-const SignUpTitle = styled.h1`
-  font-size: 32px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 25px;
-  text-align: center;
-`;
-
-const InputForm = styled.form`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  margin-top: 7px;
-  margin-bottom: 0;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 14px;
-  background-color: #f6f6f6;
-  outline: none;
-  &:focus {
-    border-color: #ccc;
-    background-color: #fff;
-  }
-`;
-
-const ErrorMessage = styled.span`
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-`;
-
-const SignUpBtn = styled.button`
-  width: 250px;
-  padding: 10px;
-  margin: 20px auto;
-  background-color: #f9f468;
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: black;
-  &:hover {
-    background-color: #67a53b;
-    color: #000;
-  }
-`;
-
-const CharacterImage = styled.img`
-  width: 100px;
-  height: 100px;
-  margin: auto;
-`;
+import { useUserStore } from '../zustand/useUserStore';
+import {
+  BackgroundSnow,
+  CharacterImage,
+  ErrorMessage,
+  Input,
+  InputForm,
+  SignUpBox,
+  SignUpBtn,
+  SignUpTitle,
+  WrappedBox
+} from '../styles/JoinPageStyles';
 
 const JoinPage = () => {
+  const { login, user } = useUserStore();
   const navigate = useNavigate();
 
   const [formStates, setFormStates] = useState({
@@ -141,9 +61,7 @@ const JoinPage = () => {
       });
       hasError = true;
       return;
- 
     } else {
-
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(formStates.email)) {
         setFormErrors({
@@ -187,9 +105,9 @@ const JoinPage = () => {
       // 닉네임 중복 체크
       const { data: nicknameData, error: nicknameError } = await supabase
         .from('users')
-        .select('*')
+        .select('nickname')
         .eq('nickname', formStates.nickname)
-        .single();
+        .maybeSingle();
 
       if (nicknameData) {
         setFormErrors({
@@ -223,6 +141,13 @@ const JoinPage = () => {
         return;
       }
 
+      // 유저 상태 저장
+      login({
+        id: data.user.id,
+        email: formStates.email,
+        nickname: formStates.nickname
+      });
+
       setFormStates({
         email: '',
         password: '',
@@ -238,7 +163,6 @@ const JoinPage = () => {
       });
 
       alert('회원가입 성공!');
-
       navigate('/');
     } catch (error) {
       console.log('회원가입 에러 => ', error);
