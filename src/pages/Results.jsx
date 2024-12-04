@@ -196,7 +196,7 @@ const Results = () => {
         .select('mbtititle, description, besttag, badtag')
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
-        .limit(1)
+        .limit(2)
         .single();
 
       console.log('Fetched data => ', data);
