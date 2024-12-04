@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { calculateMBTI, christmass } from '../utils/chistmassCalculator';
 import { supabase } from '../supabase/supabase';
 import daeeun_kong from '/daeeun_kong.gif';
-
+import background1 from '/background1.png';
 
 // 스타일드 컴포넌트 정의
 const PageWrapper = styled.div`
