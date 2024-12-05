@@ -196,15 +196,16 @@ const Results = () => {
         .select('mbtititle, description, besttag, badtag')
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
+        .limit(1);
 
       console.log('Fetched data => ', data);
       console.log('Fetch Error => ', fetchError);
 
       if (fetchError) throw new Error(fetchError.message);
-
-      return data; // 데이터를 반환
+      if (data.length > 0) {
+        return data[0]; // 데이터를 반환
+      }
+      return null;
     }
   });
 
