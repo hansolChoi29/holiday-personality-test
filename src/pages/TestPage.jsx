@@ -86,18 +86,6 @@ const TestPage = () => {
       const user = session.session.user;
       console.log('User:', user);
 
-      // Supabase에서 사용자 결과가 이미 존재하는지 확인
-      const { data: existingResult, error: fetchError } = await supabase
-        .from('results')
-        .select('*')
-        .eq('user_id', user.id)
-      if (fetchError && fetchError.code !== 'PGRST116') {
-        // "PGRST116"은 데이터가 없을 때의 코드
-        console.error('결과 확인 실패:', fetchError.message);
-        alert('결과 확인에 실패했습니다. 다시 시도해주세요.');
-        return;
-      }
-
       // 저장할 데이터
       const saveData = {
         user_id: user.id,
@@ -109,27 +97,16 @@ const TestPage = () => {
         created_at: new Date().toISOString()
       };
 
-      if (existingResult) {
-        // 기존 결과가 있을 경우 UPDATE
-        const { error: updateError } = await supabase.from('results').update(saveData).eq('user_id', user.id);
-        if (updateError) {
-          console.error('결과 업데이트 실패:', updateError.message);
-          alert('결과 업데이트에 실패했습니다.');
-          return;
-        }
-        console.log('결과 업데이트 성공');
-      } else {
-        // 기존 결과가 없을 경우 INSERT
-        const { error: insertError } = await supabase.from('results').insert([saveData]);
-        if (insertError) {
-          console.error('결과 저장 실패:', insertError.message);
-          alert('결과 저장에 실패했습니다.');
-          return;
-        }
-        console.log('결과 저장 성공');
+      // INSERT
+      const { error: insertError } = await supabase.from('results').insert([saveData]);
+      if (insertError) {
+        console.error('결과 저장 실패:', insertError.message);
+        alert('결과 저장에 실패했습니다.');
+        return;
       }
-
+      console.log('결과 저장 성공');
       // 결과 페이지로 이동
+
       navigate('/results', { state: { result: mbtiResult } });
     } catch (error) {
       console.error('결과 처리 실패:', error.message);
