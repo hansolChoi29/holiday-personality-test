@@ -58,7 +58,6 @@ const EditnButton = styled.button`
   top: 20%;
   height: 40px;
   cursor: pointer;
-  
 `;
 
 const ResultsContainer = styled.div`
