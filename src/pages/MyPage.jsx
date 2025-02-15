@@ -172,6 +172,7 @@ const Mypage = () => {
 
       if (!newNickname.trim()) {
         alert('닉네임을 입력해주세요!');
+        console.log("hi")
         return;
       }
 
