@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 import daeeun_kong from '/daeeun_kong.gif';
-import Logo from '../assets/logo.svg';
 import SnowMan from '../assets/snowman.svg';
 import styled from 'styled-components';
 import { useUserStore } from '../zustand/useUserStore';
+// import Logo from '../assets/logo.svg';
 
 const Container = styled.div`
   display: flex;
@@ -167,7 +167,7 @@ const Login = () => {
 
   return (
     <Container>
-      <LogoImg src={Logo} alt="Logo" />
+      {/* <LogoImg src={Logo} alt="Logo" /> */}
       <SnowManImg src={SnowMan} alt="SnowMan" />
       <Gifimg src={daeeun_kong} alt="Gif" />
 
