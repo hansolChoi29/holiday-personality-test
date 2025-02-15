@@ -5,7 +5,7 @@ import Loginpage from '../pages/Loginpage';
 import Joinpage from '../pages/Joinpage';
 import Results from '../pages/Results';
 import TestPage from '../pages/TestPage';
-import Mypage from '../pages/Mypage';
+// import Mypage from '../pages/Mypage';
 
 const Router = () => {
   return (
@@ -18,7 +18,7 @@ const Router = () => {
             <Route path="/testpage" element={<TestPage />} />
             {/* <Route element={<PrivateRoute />}> */}
             <Route path="/results" element={<Results />} />
-            <Route path="/mypage" element={<Mypage />} />
+            {/* <Route path="/mypage" element={<Mypage />} /> */}
             {/* </Route> */}
           </Route>
         </Routes>

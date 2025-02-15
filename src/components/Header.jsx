@@ -34,10 +34,10 @@ const Text = styled.button`
   color: #fff;
 `;
 
-const LinkMyPage = styled(Link)`
-  color: #fff;
-  text-decoration-line: none;
-`;
+// const LinkMyPage = styled(Link)`
+//   color: #fff;
+//   text-decoration-line: none;
+// `;
 
 const Header = () => {
   const { logout } = useUserStore();
@@ -63,7 +63,7 @@ const Header = () => {
       <NavContainer>
         <Text onClick={signOutUser}>LOGOUT</Text>
         <Text>
-          <LinkMyPage to="/mypage">MY PAGE</LinkMyPage>
+          {/* <LinkMyPage to="/mypage">MY PAGE</LinkMyPage> */}
         </Text>
       </NavContainer>
     </LayoutContainer>
