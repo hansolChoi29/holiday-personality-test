@@ -59,10 +59,13 @@ const Header = () => {
 
   return (
     <LayoutContainer>
+      <button onClick={()=>navigate('/testpage')}>
       <LogoImg src={Logo2} alt="Logo" />
+      </button>
       <NavContainer>
         <Text onClick={signOutUser}>LOGOUT</Text>
         <Text>
+          
           <LinkMyPage to="/mypage">MY PAGE</LinkMyPage>
         </Text>
       </NavContainer>

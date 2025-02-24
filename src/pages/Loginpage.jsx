@@ -1,12 +1,12 @@
 // 로그인
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 import daeeun_kong from '/daeeun_kong.gif';
-import Logo from '../assets/logo.svg';
 import SnowMan from '../assets/snowman.svg';
 import styled from 'styled-components';
 import { useUserStore } from '../zustand/useUserStore';
+// import Logo from '../assets/logo.svg';
 
 const Container = styled.div`
   display: flex;
@@ -127,11 +127,15 @@ const SingupBtn = styled.button`
 
 const Login = () => {
   // zustand 상태 불러오기
-  const { user, login } = useUserStore();
-
+  const { user, login, logout } = useUserStore();
+ 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  // 정상작동하면 지우셈
+  // useEffect(() => {
+  //   console.log("User State Updated:", user); // user 상태가 업데이트 될 때마다 로그
+  // }, [user]);
 
   // 로그인 처리 함수
   const handleLogin = async (e) => {
@@ -145,16 +149,24 @@ const Login = () => {
       if (error) throw error;
 
       console.log('Login successful:', data);
-      // zustand에 유저 정보 저장
-      login(data.user);
-      alert('로그인 성공!');
-      navigate('/testpage'); // 페이지 이동
+      if (data && data.session) {
+        
+        localStorage.setItem('token', data.session.access_token);
+        login(data.user);
+        // zustand에 유저 정보 저장
+        alert('로그인 성공!');
+        navigate('/testpage'); // 페이지 이동
+      } else {
+        console.log('session not found in data');
+        alert('로그인실패!')
+      }
+      
     } catch (error) {
       console.error('로그인 실패!', error.message);
       alert(`Login failed: ${error.message}`);
     }
   };
-  console.log(user);
+  // console.log("user", user);
   const handleLogout = () => {
     supabase.auth.signOut();
     login(null); // Zustand 상태 초기화
@@ -167,7 +179,7 @@ const Login = () => {
 
   return (
     <Container>
-      <LogoImg src={Logo} alt="Logo" />
+      {/* <LogoImg src={Logo} alt="Logo" /> */}
       <SnowManImg src={SnowMan} alt="SnowMan" />
       <Gifimg src={daeeun_kong} alt="Gif" />
 
